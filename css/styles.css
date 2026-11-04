@@ -1,0 +1,1256 @@
+/* GRAPHIC HAVOC.com — v017 shared production styles */
+
+:root {
+  /* A-103 — Color */
+  --c1: #4285f4; /* Valley Blue */
+  --c2: #f9fbfd; /* Whisper White */
+  --c3: #272727; /* Dire Wolf */
+
+  /* A-101 — Layout
+     Desktop values reach their specified maximums at the reference wide layout,
+     then scale fluidly as viewport width decreases. Column relationships remain
+     unchanged until explicitly defined Tablet / Phone specifications exist. */
+  --s1: 20px;
+  --s2: clamp(20px, 2.0833vw, 40px);
+  --s3: clamp(24px, 4.1667vw, 80px);
+  --grid-gap: clamp(8px, 2.0833vw, 40px);
+
+  /* A-102 — Typography
+     Maximum values are the specified Desktop sizes. Fluid reduction prevents
+     clipping/collision while preserving the same Desktop composition. */
+  --t1-size: 14px;
+  --t1-line: 20px;
+  --t2-size: clamp(16px, 1.25vw, 24px);
+  --t2-line: clamp(24px, 1.875vw, 36px);
+  --t3-size: clamp(30px, 2.5vw, 48px);
+  --t3-line: clamp(38px, 2.9167vw, 56px);
+  --t4-size: clamp(24px, 4.1667vw, 80px);
+  --t4-line: clamp(34px, 5.4167vw, 104px);
+  --t5-size: clamp(40px, 6.4583vw, 124px);
+  --t5-line: clamp(48px, 7.0833vw, 136px);
+
+  --w1: 400;
+  --w2: 500;
+  --w3: 600;
+  --w4: 700;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  text-size-adjust: 100%;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  background: var(--c2);
+  color: var(--c3);
+  font-family: "Public Sans", Arial, Helvetica, sans-serif;
+  line-height: 1.5;
+}
+
+img,
+video,
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: inherit;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button,
+input,
+textarea,
+select,
+a {
+  border-radius: 0;
+}
+
+h1,
+h2,
+h3,
+p {
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: none;
+}
+
+h1,
+h2,
+h3,
+p,
+ul {
+  margin-top: 0;
+}
+
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: fixed;
+  top: 0;
+  left: var(--s1);
+  z-index: 10000;
+  transform: translateY(-150%);
+  padding: 10px 14px;
+  background: var(--c2);
+  color: var(--c3);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+.js #app {
+  opacity: 0;
+}
+
+.js.is-ready #app {
+  opacity: 1;
+  transition: opacity 80ms linear;
+}
+
+.fallback {
+  min-height: 100vh;
+  display: grid;
+  place-content: center;
+  padding: var(--s3);
+}
+
+/* ---------- Tokens / utilities ---------- */
+
+.sc1 {
+  width: 100%;
+  height: auto;
+  padding: var(--s3);
+}
+
+.sc2 {
+  width: 100%;
+  height: auto;
+  padding: 0;
+}
+
+.sw {
+  width: 100%;
+  height: auto;
+  padding: var(--s2) 0;
+}
+
+.grid-16 {
+  display: grid;
+  grid-template-columns: repeat(16, minmax(0, 1fr));
+  column-gap: var(--grid-gap);
+}
+
+.grid-16 > * {
+  min-width: 0;
+}
+
+.ma1 { aspect-ratio: 1 / 1; }
+.ma2 { aspect-ratio: 4 / 5; }
+.ma3 { aspect-ratio: 16 / 9; }
+
+.t1 { font-size: var(--t1-size); line-height: var(--t1-line); }
+.t2 { font-size: var(--t2-size); line-height: var(--t2-line); }
+.t3 { font-size: var(--t3-size); line-height: var(--t3-line); }
+.t4 { font-size: var(--t4-size); line-height: var(--t4-line); }
+.t5 { font-size: var(--t5-size); line-height: var(--t5-line); }
+
+.w1 { font-weight: var(--w1); }
+.w2 { font-weight: var(--w2); }
+.w3 { font-weight: var(--w3); }
+.w4 { font-weight: var(--w4); }
+
+.dark-zone {
+  background: var(--c3);
+  color: var(--c2);
+}
+
+/* ---------- Navigation ---------- */
+
+.site-header {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 1000;
+  height: 80px;
+  padding: 0 var(--s3);
+  display: grid;
+  grid-template-columns: repeat(16, minmax(0, 1fr));
+  column-gap: var(--grid-gap);
+  align-items: start;
+  pointer-events: none;
+}
+
+.brand-tab {
+  grid-column: 14 / 16; /* Columns 14–15 */
+  justify-self: end; /* HA3 */
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 10px 14px;
+  background: var(--c1);
+  color: var(--c2);
+  text-decoration: none;
+  transition: color 200ms ease-in-out, background-color 200ms ease-in-out;
+}
+
+.brand-tab__mark {
+  width: 120px;
+  aspect-ratio: 480 / 89.7;
+  background-color: currentColor;
+  -webkit-mask: url("../assets/GRAPHIC-HAVOC_wordmark.svg") center / contain no-repeat;
+  mask: url("../assets/GRAPHIC-HAVOC_wordmark.svg") center / contain no-repeat;
+}
+
+.brand-tab:hover,
+.brand-tab:focus-visible {
+  background: var(--c2);
+  color: var(--c1);
+}
+
+/* ---------- Hero ---------- */
+
+.hero {
+  position: relative;
+  background: var(--c2);
+  overflow: hidden;
+}
+
+.hero-media {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  background: var(--c2);
+}
+
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  align-items: center;
+}
+
+.hero-title {
+  grid-column: 3 / 12; /* Columns 3–11 */
+  margin: 0;
+  color: var(--c2);
+  letter-spacing: -0.03em;
+  min-width: 0;
+}
+
+/* Live semantic H1 with a C1 background applied only to each text line.
+   box-decoration-break keeps the treatment attached to each line fragment. */
+.hero-title__highlight {
+  background: var(--c1);
+  color: var(--c2);
+  padding: 0 0.07em 0.015em;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+/* ---------- Positioning ---------- */
+
+/* Standard sections remain height:auto per A-101.
+   Vertical rhythm comes from SC1 / SW / S1-S3, not viewport height. */
+.positioning-grid {
+  align-items: start;
+}
+
+.section-kicker {
+  grid-column: 1 / 4; /* Columns 1–3 */
+  margin: 0;
+  align-self: start;
+}
+
+.positioning .section-kicker {
+  align-self: center; /* VA2 — Columns 1–3 */
+}
+
+.positioning-title {
+  grid-column: 4 / 9; /* Columns 4–8 */
+  margin: 0;
+  align-self: center; /* VA2 */
+  text-align: right;
+  letter-spacing: -0.025em;
+}
+
+.positioning-media {
+  grid-column: 11 / 16; /* Columns 11–15 */
+  display: grid;
+  gap: var(--s2);
+}
+
+.media-placeholder {
+  width: 100%;
+  background: var(--c2);
+}
+
+.positioning-image {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.positioning-copy {
+  grid-column: 4 / 10; /* Columns 4–9 */
+  padding-top: var(--s3);
+}
+
+.positioning-copy p {
+  margin-bottom: var(--s1);
+}
+
+.discipline-list {
+  grid-column: 11 / 17; /* Columns 11–16 */
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--s1);
+  list-style: none;
+  padding: var(--s3) 0 0;
+  margin-bottom: 0;
+}
+
+/* ---------- Method / Applications ---------- */
+
+/* Standard sections remain height:auto per A-101.
+   Method / Applications use two explicit content rows:
+   heading row, then body-copy row, separated by S3. */
+.editorial-layout {
+  align-items: start;
+  row-gap: var(--s3);
+}
+
+.method .section-kicker {
+  grid-row: 1;
+  align-self: center; /* VA2 — Columns 1–3 */
+}
+
+.applications .section-kicker {
+  grid-column: 1 / 3; /* Columns 1–2 */
+  grid-row: 1;
+  align-self: center; /* VA2 */
+}
+
+.editorial-title {
+  grid-column: 4 / 11; /* Columns 4–10 */
+  grid-row: 1;
+  margin: 0;
+  align-self: start; /* VA1 */
+  letter-spacing: -0.025em;
+}
+
+.editorial-copy {
+  grid-row: 2;
+  padding-top: 0;
+}
+
+.editorial-copy p {
+  margin-bottom: var(--s1);
+}
+
+.editorial-copy--left {
+  grid-column: 4 / 9; /* Columns 4–8 */
+}
+
+.editorial-copy--right {
+  grid-column: 10 / 15; /* Columns 10–14 */
+}
+
+.applications .editorial-title {
+  grid-column: 3 / 10; /* Columns 3–9 */
+}
+
+/* ---------- Case studies ---------- */
+
+.case-studies {
+  background: var(--c2);
+}
+
+.case-study--cb1 {
+  --case-bg: var(--c2);
+  --case-fg: var(--c3);
+  --case-media: var(--c3);
+}
+
+.case-study--cb2 {
+  --case-bg: var(--c3);
+  --case-fg: var(--c2);
+  --case-media: var(--c2);
+}
+
+.case-study {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(16, minmax(0, 1fr));
+  column-gap: var(--grid-gap);
+  width: 100%;
+  padding: var(--s3);
+  background: var(--case-bg, var(--c2));
+  color: var(--case-fg, var(--c3));
+}
+
+.case-study__identity {
+  grid-column: 1 / 4; /* Columns 1–3 */
+  align-self: start;
+  min-width: 0;
+  position: sticky;
+  top: var(--s3);
+}
+
+.case-study__label {
+  margin: 0 0 var(--s2);
+  letter-spacing: -0.025em;
+}
+
+.client-mark {
+  display: block;
+  width: 100%;
+  margin: 0 0 var(--s2);
+  color: var(--case-fg, var(--c3));
+  font-size: var(--t1-size);
+  line-height: var(--t1-line);
+  font-weight: var(--w4);
+}
+
+.client-mark__image {
+  display: block;
+  width: min(100%, 220px);
+  height: auto;
+}
+
+.client-mark--fpo {
+  min-height: var(--t1-line);
+}
+
+.case-study__overview {
+  font-size: var(--t1-size);
+  line-height: var(--t1-line);
+}
+
+.case-study__overview p {
+  margin: 0;
+}
+
+.case-study__overview p + p {
+  margin-top: var(--s1); /* PS1 */
+}
+
+.case-study__narrative {
+  grid-column: 5 / 17; /* Columns 5–16 */
+  min-width: 0;
+}
+
+.case-row {
+  margin: 0 0 var(--s3); /* S3 between major rows */
+}
+
+.case-media-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr)); /* Global Columns 5–10 / 11–16 */
+  gap: var(--grid-gap);
+  align-items: start;
+}
+
+.case-media-stack {
+  display: grid;
+  gap: var(--s2); /* S2 between stacked media */
+}
+
+.case-media {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: transparent;
+}
+
+.case-media-figure {
+  margin: 0;
+  min-width: 0;
+}
+
+.case-media-figure__caption {
+  margin: var(--s1) 0 0; /* S1 media-to-caption */
+  color: inherit;
+}
+
+img.case-media {
+  height: auto;
+  object-fit: contain;
+}
+
+video.case-media {
+  object-fit: contain;
+}
+
+iframe.case-media {
+  aspect-ratio: 16 / 9;
+}
+
+.case-media-group--full {
+  width: 100%;
+}
+
+.case-media--portrait {
+  aspect-ratio: 4 / 5;
+}
+
+.case-media--short,
+.case-media--wide {
+  aspect-ratio: 16 / 9;
+}
+
+.case-caption-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--grid-gap);
+  align-items: start;
+  margin-top: var(--s3); /* S3 after the complete media/caption row */
+}
+
+.case-caption-grid .case-lead {
+  grid-column: 1 / 6; /* Global Columns 5–9 */
+  margin: 0;
+}
+
+.case-caption-grid .case-copy {
+  grid-column: 7 / 13; /* Global Columns 11–16 */
+  margin: 0;
+}
+
+.case-copy {
+  font-size: var(--t2-size);
+  line-height: var(--t2-line);
+  font-weight: var(--w1);
+}
+
+.case-copy p,
+.case-lead-copy p {
+  margin: 0;
+}
+
+.case-copy p + p,
+.case-lead-copy p + p {
+  margin-top: var(--s1); /* PS1 */
+}
+
+.case-caption-grid--with-lead-copy .case-lead-column {
+  grid-column: 1 / 6; /* Global Columns 5–9 */
+  min-width: 0;
+}
+
+.case-caption-grid--with-lead-copy .case-lead {
+  margin: 0;
+}
+
+.case-lead-copy {
+  margin-top: var(--s2);
+  font-size: var(--t2-size);
+  line-height: var(--t2-line);
+  font-weight: var(--w1);
+}
+
+.case-caption-grid--with-lead-copy .case-copy {
+  grid-column: 7 / 13; /* Global Columns 11–16 */
+}
+
+.case-outcome {
+  grid-column: 5 / 14; /* Starts at Column 5; preserves the previous nine-column span */
+  margin: 0 0 var(--s3);
+  align-self: start; /* VA1 */
+  min-width: 0;
+}
+
+.case-outcome__copy {
+  margin: 0;
+}
+
+
+.case-studies--standalone {
+  padding-top: 0;
+}
+
+/* ---------- Selected Work ---------- */
+
+.selected-work {
+  background: var(--c2);
+  color: var(--c3);
+}
+
+.selected-work__layout {
+  align-items: start;
+}
+
+.selected-work__intro {
+  grid-column: 1 / 4; /* Columns 1–3 */
+  min-width: 0;
+}
+
+.selected-work__tag {
+  width: min(100%, 160px);
+  height: auto;
+  margin: 0 0 var(--s2);
+}
+
+.selected-work__title {
+  margin: 0 0 var(--s2);
+  letter-spacing: -0.025em;
+}
+
+.selected-work__copy {
+  margin: 0 0 var(--s2);
+}
+
+.selected-work__copy a {
+  color: var(--c1);
+  text-decoration: none;
+  transition: color 200ms ease-in-out;
+}
+
+.selected-work__copy a:hover,
+.selected-work__copy a:focus-visible {
+  color: var(--c3);
+}
+
+/* The Selected Work composition is intentionally less rigid than the case studies.
+   This FPO mosaic follows the current clean Illustrator visual benchmark while
+   individual media filenames / alt text are still being assembled. */
+.selected-work__mosaic {
+  grid-column: 5 / 17; /* Columns 5–16 */
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2560 / 9242;
+  min-width: 0;
+}
+
+.selected-work__item {
+  position: absolute;
+  display: block;
+  background: var(--c3);
+}
+
+.selected-work__item--01 { left:55.1953%; top:0%; width:44.8047%; }
+.selected-work__item--02 { left:23.7109%; top:1.6014%; width:13.2812%; }
+.selected-work__item--03 { left:7.8125%; top:8.5263%; width:44.8047%; }
+.selected-work__item--04 { left:31.6406%; top:16.2303%; width:44.5312%; }
+.selected-work__item--05 { left:78.7891%; top:16.2303%; width:21.2109%; }
+.selected-work__item--06 { left:15.7422%; top:17.6693%; width:13.2812%; }
+.selected-work__item--07 { left:78.7891%; top:24.3021%; width:21.2109%; }
+.selected-work__item--08 { left:0%; top:25.6763%; width:29.0234%; }
+.selected-work__item--09 { left:39.5703%; top:32.3739%; width:60.4297%; }
+.selected-work__item--10 { left:0%; top:33.8130%; width:36.9922%; }
+.selected-work__item--11 { left:39.5703%; top:43.2266%; width:44.5312%; }
+.selected-work__item--12 { left:86.7188%; top:44.6657%; width:13.2812%; }
+.selected-work__item--13 { left:7.8125%; top:51.1578%; width:29.1797%; }
+.selected-work__item--14 { left:7.8125%; top:59.3703%; width:92.1875%; }
+.selected-work__item--15 { left:0.0391%; top:74.4536%; width:60.3906%; }
+.selected-work__item--16 { left:63.1641%; top:75.8818%; width:36.8359%; }
+.selected-work__item--17 { left:23.7109%; top:84.5813%; width:44.5312%; }
+
+/* ---------- Clients ---------- */
+
+.clients {
+  padding-top: var(--s3);
+  padding-bottom: var(--s3);
+}
+
+.clients-grid {
+  align-items: start;
+}
+
+.clients-media {
+  grid-column: 2 / 9; /* Columns 2–8 */
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.clients-copy-block {
+  grid-column: 11 / 16; /* Columns 11–15 */
+}
+
+.clients-copy-block h2 {
+  margin: 0 0 var(--s3);
+  letter-spacing: -0.025em;
+}
+
+.clients-copy-block p {
+  margin-bottom: 0;
+}
+
+/* ---------- Contact / Web3Forms form ---------- */
+
+.contact {
+  padding-top: var(--s3);
+  padding-bottom: var(--s2);
+}
+
+.contact-wrap {
+  padding-bottom: 0;
+}
+
+.contact-grid {
+  align-items: end;
+}
+
+.contact-title {
+  grid-column: 1 / 7; /* Columns 1–6 */
+  margin: 0;
+  align-self: end; /* VA3 */
+  min-width: 0;
+  max-width: 100%;
+  letter-spacing: -0.025em;
+}
+
+.contact-form {
+  grid-column: 7 / 17; /* Columns 7–16 */
+  min-width: 0;
+  display: grid;
+  grid-template-columns: repeat(10, minmax(0, 1fr));
+  column-gap: var(--grid-gap);
+  align-items: stretch;
+}
+
+.contact-form__fields {
+  grid-column: 1 / 5;
+  display: grid;
+  gap: var(--s1);
+}
+
+.contact-form__message {
+  grid-column: 5 / 11;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  gap: var(--s1);
+  min-height: 248px;
+}
+
+.contact-form label {
+  display: block;
+}
+
+.contact-form input,
+.contact-form textarea,
+.contact-form button,
+.contact-form__state {
+  width: 100%;
+  border: 0;
+  border-radius: 0;
+}
+
+.contact-form input,
+.contact-form textarea {
+  background: var(--c2);
+  color: var(--c3);
+  font-size: var(--t2-size);
+  line-height: var(--t2-line);
+}
+
+.contact-form input {
+  height: 44px;
+  padding: 4px 20px;
+}
+
+.contact-form textarea {
+  min-height: 184px;
+  height: 100%;
+  padding: 30px 28px;
+  resize: vertical;
+}
+
+.contact-form__textarea-wrap {
+  min-height: 0;
+  height: 100%;
+}
+
+.contact-form__state {
+  display: none;
+  min-height: 184px;
+  padding: 30px 28px;
+  align-items: center;
+  background: var(--c1);
+  color: var(--c2);
+  font-size: var(--t2-size);
+  line-height: var(--t2-line);
+}
+
+.contact-form__submit {
+  min-height: 44px;
+  padding: 8px 20px;
+  background: var(--c1);
+  color: var(--c2);
+  cursor: pointer;
+  text-align: left;
+  font-size: var(--t2-size);
+  line-height: var(--t2-line);
+  transition: color 200ms ease-in-out, background-color 200ms ease-in-out;
+}
+
+.contact-form__submit:hover,
+.contact-form__submit:focus-visible {
+  background: var(--c2);
+  color: var(--c1);
+}
+
+.contact-form.is-validation-error input,
+.contact-form.is-validation-error textarea {
+  background: var(--c1);
+  color: var(--c2);
+}
+
+.contact-form.is-validation-error input::placeholder,
+.contact-form.is-validation-error textarea::placeholder {
+  color: transparent;
+}
+
+.contact-form.is-validation-error .contact-form__textarea-wrap {
+  display: none;
+}
+
+.contact-form.is-validation-error .contact-form__state {
+  display: flex;
+}
+
+.contact-form.is-validation-error .contact-form__state::before {
+  content: "Please fill in all fields.";
+}
+
+.contact-form.is-validation-error .contact-form__submit::before {
+  content: "TRY AGAIN";
+}
+
+.contact-form.is-validation-error .contact-form__submit {
+  font-size: 0;
+}
+
+.contact-form.is-validation-error .contact-form__submit::before {
+  font-size: var(--t2-size);
+}
+
+.contact-form__success {
+  display: none;
+  grid-column: 1 / 11;
+  min-height: 248px;
+  padding: 30px 28px;
+  align-items: center;
+  justify-content: center;
+  background: var(--c1);
+  color: var(--c2);
+  font-size: var(--t3-size);
+  line-height: var(--t3-line);
+  font-weight: var(--w3);
+  text-align: center;
+}
+
+.contact-form.is-success .contact-form__fields,
+.contact-form.is-success .contact-form__message {
+  display: none;
+}
+
+.contact-form.is-success .contact-form__success {
+  display: flex;
+}
+
+.footer-wordmark {
+  grid-column: 1 / 17;
+  width: 100%;
+  aspect-ratio: 480 / 89.7;
+  margin-top: var(--s3);
+  background-color: var(--c2);
+  -webkit-mask: url("../assets/GRAPHIC-HAVOC_wordmark.svg") left bottom / contain no-repeat;
+  mask: url("../assets/GRAPHIC-HAVOC_wordmark.svg") left bottom / contain no-repeat;
+}
+
+/* ---------- Random homepage FPO variants ---------- */
+
+.random-fpo {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: var(--s3);
+  background: var(--fpo-bg);
+  color: var(--fpo-fg);
+  text-align: center;
+}
+
+.random-fpo h1,
+.random-fpo p {
+  margin-bottom: var(--s2);
+}
+
+/* ---------- Responsive behavior ----------
+   Tablet and Phone compositions are intentionally not invented here.
+   The Desktop system remains fluid, preserves assigned columns, and scales
+   without overlap/clipping until dedicated breakpoint specifications exist. */
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .js.is-ready #app { transition: none; }
+  .brand-tab,
+  .contact-form__submit { transition: none; }
+}
+
+/* ==========================================================================
+   /work system — v019
+   ========================================================================== */
+
+/* ---------- Selected Work: project index ---------- */
+.selected-work--index {
+  --thumbnail-tone: var(--c3);
+  background: var(--c3);
+  color: var(--c3);
+}
+
+.selected-work-index__intro > .sw {
+  align-items: start;
+}
+
+.selected-work-index__tag {
+  grid-column: 1 / 4; /* Columns 1–3 */
+  width: min(100%, 160px);
+  height: auto;
+  align-self: start;
+}
+
+.selected-work-index__title {
+  grid-column: 4 / 8; /* Columns 4–7 */
+  margin: 0;
+  letter-spacing: -0.025em;
+}
+
+.selected-work-index__copy {
+  grid-column: 8 / 12;
+  margin: 0;
+}
+
+.selected-work-index__grid,
+.work-index__grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+  width: 100%;
+}
+
+/* Homepage 001 shows a randomized subset of 12 work cards.
+   /work/ continues to display the complete archive. */
+.home-001 .selected-work-index__grid > .work-card:nth-child(n + 13) {
+  display: none;
+}
+
+.work-card {
+  --thumbnail-tone: var(--c3);
+  position: relative;
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--thumbnail-tone);
+  color: var(--c2);
+  text-decoration: none;
+}
+
+.work-card__image {
+  position: relative;
+  z-index: 0;
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  filter: grayscale(100%);
+  mix-blend-mode: screen;
+}
+
+/* A-103 TN treatment: source files remain full color. The assigned token is
+   the darkest/base tone while the grayscale image retains open highlights and
+   midtones for legibility. */
+
+.work-card__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: var(--s2);
+  padding: var(--s2) var(--s3);
+  background: var(--c1);
+  color: var(--c2);
+  opacity: 0;
+  transition: opacity 200ms ease-in-out;
+}
+
+.work-card__title,
+.work-card__disciplines {
+  display: block;
+}
+
+.work-card:hover .work-card__overlay,
+.work-card:focus-visible .work-card__overlay {
+  opacity: 1;
+}
+
+/* ---------- /work archive index ---------- */
+.work-index {
+  --thumbnail-tone: var(--c3);
+  width: 100%;
+  padding: 0;
+}
+
+.work-index__grid {
+  width: 100%;
+}
+
+/* ---------- Generated /work project template ---------- */
+.project-page {
+  padding-top: 0;
+}
+
+.project-intro {
+  align-items: start;
+  margin-bottom: var(--s3);
+}
+
+.project-intro__copy {
+  grid-column: 1 / 9; /* Columns 1–8 */
+  min-width: 0;
+}
+
+.project-intro--full .project-intro__copy {
+  grid-column: 1 / 17; /* Columns 1–16 */
+}
+
+.project-byline {
+  margin: 0 0 var(--s1);
+}
+
+.project-title {
+  margin: 0 0 var(--s2);
+  letter-spacing: -0.025em;
+}
+
+.project-intro__body p {
+  margin: 0;
+}
+
+.project-intro__body p + p {
+  margin-top: var(--s1);
+}
+
+.project-intro__media {
+  min-width: 0;
+}
+
+.project-intro__media--half {
+  grid-column: 9 / 17; /* Columns 9–16 when paired with half opening copy */
+}
+
+.project-intro--full .project-intro__media--half {
+  grid-column: 1 / 9; /* Standalone half defaults left */
+}
+
+.project-intro__media--full {
+  grid-column: 1 / 17; /* Columns 1–16 */
+}
+
+.project-stream {
+  width: 100%;
+}
+
+.project-media-group {
+  margin-bottom: var(--s2);
+}
+
+.project-media-group--half,
+.project-media-group--legacy-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--grid-gap);
+}
+
+.project-media-group--full,
+.project-media-group--legacy-single {
+  display: block;
+}
+
+.project-media-stack {
+  display: grid;
+  gap: var(--s2);
+  min-width: 0;
+}
+
+.project-media {
+  margin: 0;
+  min-width: 0;
+}
+
+.project-media__asset {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: transparent;
+}
+
+/* Match the working RELATE case-study video behavior: use the source
+   video's intrinsic proportions, not a fixed 16:9 frame. */
+video.project-media__asset {
+  width: 100%;
+  height: auto;
+  aspect-ratio: auto;
+  object-fit: contain;
+}
+
+.project-media__caption {
+  margin-top: 8px;
+  margin-bottom: 0;
+}
+
+.project-section {
+  display: grid;
+  grid-template-columns: repeat(16, minmax(0, 1fr));
+  column-gap: var(--grid-gap);
+  margin: 0 0 var(--s3);
+  padding-top: var(--s1);
+}
+
+.project-section__title {
+  grid-column: 5 / 10; /* Columns 5–9 */
+  margin: 0;
+}
+
+.project-section__copy {
+  grid-column: 11 / 17; /* Columns 11–16 */
+}
+
+.project-section__copy p {
+  margin: 0;
+}
+
+.project-section__copy p + p {
+  margin-top: var(--s1);
+}
+
+.project-contact .contact-grid {
+  align-items: start;
+}
+
+.project-contact .contact-title {
+  align-self: start;
+}
+
+.project-contact__work-link {
+  color: var(--c1);
+  text-decoration: none;
+  transition: color 200ms ease-in-out;
+}
+
+.project-contact__work-link:hover,
+.project-contact__work-link:focus-visible {
+  color: var(--c2);
+}
+
+
+/* Provisional phone behavior for the project-page content system. Desktop
+   LAYOUT: half/full intent remains in project.md; at phone widths all project
+   content becomes one vertical 16-column stream. */
+@media (max-width: 767px) {
+  .project-intro__copy,
+  .project-intro__media,
+  .project-section__title,
+  .project-section__copy {
+    grid-column: 1 / 17;
+  }
+
+  .project-intro,
+  .project-section {
+    row-gap: var(--s1);
+  }
+
+  .project-media-group--half,
+  .project-media-group--legacy-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .case-study {
+    display: block;
+    padding: var(--s2);
+  }
+
+  .case-study__identity {
+    position: static;
+    margin-bottom: var(--s3);
+  }
+
+  .case-media-grid {
+    grid-template-columns: 1fr;
+    gap: var(--s2);
+  }
+
+  .case-caption-grid,
+  .case-caption-grid--with-lead-copy {
+    grid-template-columns: 1fr;
+    row-gap: var(--s1);
+  }
+
+  .case-caption-grid .case-lead,
+  .case-caption-grid .case-copy,
+  .case-caption-grid--with-lead-copy .case-lead-column,
+  .case-caption-grid--with-lead-copy .case-copy {
+    grid-column: 1;
+  }
+
+  .case-outcome {
+    margin-top: var(--s3);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .work-card__overlay,
+  .project-contact__work-link {
+    transition: none;
+  }
+}

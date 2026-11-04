@@ -1,0 +1,26 @@
+[
+  {
+    "id": "spot-1793128549167-vcltl",
+    "region": "x0_y-1",
+    "x": 1166,
+    "y": 3384,
+    "label": "Artwork detail",
+    "action": "link",
+    "url": "https://GRAPHICHAVOC.com",
+    "content": "",
+    "minZoom": 1.5,
+    "reveal": 0.9
+  },
+  {
+    "id": "spot-1793129315281-x6am6",
+    "region": "x0_y-1",
+    "x": 2881,
+    "y": 3340,
+    "label": "Testing",
+    "action": "modal",
+    "url": "",
+    "content": "this is a modal this is a modal this is a modal this is a modal",
+    "minZoom": 1,
+    "reveal": 0.9
+  }
+]

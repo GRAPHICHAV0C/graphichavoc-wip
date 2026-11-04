@@ -1,0 +1,95 @@
+<div class="home-002" data-homepage-variant="002">
+  <template data-homepage-assets>
+    <link rel="stylesheet" href="homepages/002/css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/openseadragon@6.1.1/build/openseadragon/openseadragon.min.js"></script>
+    <script src="homepages/002/js/hotspots.js"></script>
+    <script src="homepages/002/js/intro.js"></script>
+    <script src="homepages/002/js/contact-panel.js"></script>
+    <script src="homepages/002/js/viewer.js"></script>
+  </template>
+
+  <header class="site-header" aria-label="Primary">
+    <a class="brand-tab" href="#contact" aria-label="GRAPHIC HAVOC — show contact form" aria-controls="home-002-contact-panel" aria-expanded="false">
+      <span class="brand-tab__mark" aria-hidden="true"></span>
+      <span class="sr-only">GRAPHIC HAVOC</span>
+    </a>
+  </header>
+
+  <main id="main-content" class="home-002__map-shell">
+    <div id="viewer" aria-label="Interactive artwork. Drag to pan; scroll or pinch to zoom."></div>
+    <div id="status" role="status" aria-live="polite" hidden></div>
+    <div id="explore-hint" class="explore-hint" aria-label="How to explore the artwork"><span class="hint-desktop">CLICK + DRAG TO EXPLORE — SCROLL TO ZOOM</span><span class="hint-mobile">DRAG TO EXPLORE — PINCH TO ZOOM</span></div>
+    <div id="hotspot-popover" hidden></div>
+    <div id="hotspot-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" hidden>
+      <div class="modal-card"><button id="close-modal" class="close" aria-label="Close">×</button><h2 id="modal-title"></h2><div id="modal-body"></div></div>
+    </div>
+    <aside id="editor" aria-label="Edit Hotspots" hidden>
+      <header><strong>Edit Hotspots</strong><button id="toggle-editor" type="button">Hide</button></header>
+      <p class="help">Click or tap the artwork to place a dot. Select an existing dot to edit it. Editing is local until you export.</p>
+      <p id="editor-status" aria-live="polite"></p>
+      <form id="hotspot-form" hidden>
+        <label>Region <input name="region" readonly></label>
+        <div class="two"><label>X (px) <input name="x" type="number" min="0" max="4095" required></label><label>Y (px) <input name="y" type="number" min="0" max="4095" required></label></div>
+        <label>Label <input name="label" maxlength="140" required placeholder="Artwork detail"></label>
+        <label>Action <select name="action"><option value="link">Link</option><option value="modal">Modal</option></select></label>
+        <label id="url-label">URL <input name="url" type="text" placeholder="https://example.com/project"></label>
+        <label id="content-label" hidden>Modal text <textarea name="content" rows="4" placeholder="Information about this work"></textarea></label>
+        <div class="two"><label>Minimum zoom × <input name="minZoom" type="number" min="1" max="100" step="0.1" value="1.5"></label><label>Center reveal <input name="reveal" type="number" min="0.1" max="1.5" step="0.05" value="0.9"></label></div>
+        <div class="actions"><button type="submit">Save dot</button><button id="delete-hotspot" type="button" class="secondary">Delete</button><button id="cancel-hotspot" type="button" class="secondary">Cancel</button></div>
+      </form>
+      <div class="actions"><button id="export-md" type="button">Export .md</button><button id="export-json" type="button">Export JSON</button></div>
+      <label class="import-label">Import .md or JSON <input id="import-hotspots" type="file" accept=".md,.json,text/markdown,application/json"></label>
+      <p class="help">Export JSON to <code>homepages/002/config/hotspots.json</code> for the viewer. Or export Markdown and run the included build tool. Import to resume editing.</p>
+    </aside>
+    <button id="show-editor" type="button" hidden>Edit Hotspots</button>
+  </main>
+
+  <div class="home-002__contact-panel dark-zone" id="home-002-contact-panel" aria-hidden="true" inert>
+    <footer class="contact sc1" id="contact" aria-labelledby="contact-title">
+      <div class="sw contact-wrap">
+        <div class="grid-16 contact-grid">
+          <h2 class="contact-title t4 w3" id="contact-title">Communicate w/</h2>
+
+          <form class="contact-form" action="https://api.web3forms.com/submit" method="POST" novalidate>
+            <input type="hidden" name="access_key" value="41d082aa-315b-4534-b735-3c4187c5c1a7">
+            <div class="contact-form__fields">
+              <label>
+                <span class="sr-only">First Name</span>
+                <input name="firstname" type="text" autocomplete="given-name" placeholder="First Name" required>
+              </label>
+              <label>
+                <span class="sr-only">Last Name</span>
+                <input name="lastname" type="text" autocomplete="family-name" placeholder="Last Name" required>
+              </label>
+              <label>
+                <span class="sr-only">Email Address</span>
+                <input name="email" type="email" autocomplete="email" placeholder="Email Address" required>
+              </label>
+              <label>
+                <span class="sr-only">Company and/or Project Name</span>
+                <input name="company_project" type="text" placeholder="Company &amp;/or Project Name" required>
+              </label>
+              <label>
+                <span class="sr-only">URL</span>
+                <input name="url" type="url" inputmode="url" placeholder="URL" required>
+              </label>
+            </div>
+
+            <div class="contact-form__message">
+              <label class="contact-form__textarea-wrap">
+                <span class="sr-only">Your message</span>
+                <textarea name="message" placeholder="Your message..." required></textarea>
+              </label>
+              <div class="contact-form__state" aria-live="polite" aria-atomic="true"></div>
+              <button class="contact-form__submit" type="submit">SEND</button>
+            </div>
+
+            <div class="contact-form__success" role="status" aria-live="polite" aria-atomic="true">THANKS TALK SOON</div>
+          </form>
+
+          <div class="footer-wordmark" role="img" aria-label="GRAPHIC HAVOC"></div>
+        </div>
+      </div>
+    </footer>
+  </div>
+</div>

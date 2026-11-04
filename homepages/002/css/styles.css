@@ -1,0 +1,69 @@
+.homepage-variant--002,.homepage-variant--002 body{width:100%;height:100%;margin:0;overflow:hidden;background:#fff}
+#viewer{position:fixed;inset:0;width:100%;height:100%;touch-action:none;cursor:grab;overscroll-behavior:none}
+#viewer:active{cursor:grabbing}
+#status:not([hidden]){position:fixed;inset:auto 1rem 1rem;max-width:36rem;background:rgba(255,255,255,.95);color:#222;padding:.85rem 1rem;border:1px solid #ccc;font:14px/1.4 system-ui,sans-serif;z-index:10}
+.home-002__map-shell,.home-002__map-shell *{box-sizing:border-box}.home-002__map-shell button,.home-002__map-shell input,.home-002__map-shell textarea,.home-002__map-shell select{font:inherit}.home-002__map-shell button{cursor:pointer}
+.hotspot{border:0;background:transparent;width:40px;height:40px;padding:0;display:flex;align-items:center;justify-content:center;transition:opacity .25s ease;outline-offset:2px}
+.hotspot::before{content:'';display:block;width:12px;height:12px;border-radius:50%;background:#fff;border:2px solid #285880;box-shadow:0 1px 6px #0005}
+.hotspot:hover::before,.hotspot:focus-visible::before,.hotspot.selected::before{background:#285880;border-color:white;outline:2px solid #285880}
+#hotspot-popover{position:fixed;z-index:45;max-width:min(280px,85vw);padding:13px 15px;border:1px solid #ccc;border-radius:7px;box-shadow:0 4px 22px #0002;background:#fff;font:14px/1.4 system-ui,sans-serif;transform:translate(-50%,-100%)}
+#hotspot-popover strong{display:block;margin-bottom:8px}#hotspot-popover a,#hotspot-popover button{display:inline-block;color:#174d80;background:none;border:0;padding:0;text-decoration:underline}#hotspot-popover[hidden],#hotspot-modal[hidden],#editor[hidden],#show-editor[hidden]{display:none}
+#hotspot-modal{position:fixed;inset:0;z-index:65;background:#0008;display:grid;place-items:center;padding:20px}
+.modal-card{background:#fff;color:#222;border-radius:9px;max-width:560px;width:100%;max-height:80dvh;overflow:auto;padding:25px;font:16px/1.55 system-ui,sans-serif;position:relative;white-space:pre-wrap}.modal-card h2{font-size:22px}.close{position:absolute;right:15px;top:10px;border:0;background:none;font-size:28px}
+#editor{position:fixed;right:12px;top:12px;bottom:12px;overflow:auto;width:min(350px,calc(100vw - 24px));background:#fff;color:#202020;border:1px solid #ccc;border-radius:10px;box-shadow:0 7px 28px #0003;z-index:60;padding:15px;font:13px/1.4 system-ui,sans-serif}
+#editor header,.actions,.two{display:flex;gap:8px;align-items:center;justify-content:space-between}#editor .two>*{flex:1;min-width:0}#editor label{display:block;margin:9px 0 5px}#editor input,#editor textarea,#editor select{width:100%;padding:8px;border:1px solid #aaa;border-radius:4px;background:#fff;color:#222}
+#editor button,#show-editor{border:1px solid #285880;border-radius:5px;background:#285880;color:#fff;padding:8px 10px}#editor button.secondary{background:#fff;color:#285880}#editor .actions{flex-wrap:wrap;margin-top:12px;justify-content:flex-start}#editor .help{color:#555;font-size:12px}#editor-status{color:#285880;font-weight:600}
+#import-hotspots{font-size:12px}#show-editor{position:fixed;z-index:60;right:14px;top:14px;font:13px system-ui,sans-serif}
+body.editing #viewer{cursor:crosshair}body.editing #viewer:active{cursor:crosshair}
+@media(max-width:650px){#editor{width:calc(100vw - 24px);top:auto;bottom:8px;max-height:65dvh}#show-editor{top:env(safe-area-inset-top,12px)}}
+
+/* v004: unobtrusive fixed navigation hint */
+.explore-hint{position:fixed;z-index:35;bottom:calc(22px + env(safe-area-inset-bottom, 0px));left:50%;transform:translateX(-50%);width:max-content;max-width:calc(100vw - 32px);padding:10px 15px;border:1px solid rgba(55,69,78,.2);border-radius:5px;background:rgba(255,255,255,.86);box-shadow:0 2px 12px rgba(0,0,0,.075);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);font:500 10px/1.3 system-ui,-apple-system,sans-serif;letter-spacing:.055em;text-align:center;color:#263744;pointer-events:none;opacity:1;transition:opacity .4s ease;white-space:normal}
+.explore-hint.is-hidden{opacity:0;visibility:hidden;transition:opacity .4s ease,visibility 0s linear .4s}
+.hint-mobile{display:none}
+@media (pointer:coarse){.hint-desktop{display:none}.hint-mobile{display:inline}}
+@media(max-width:480px){.explore-hint{font-size:9px;padding:10px 12px;bottom:calc(16px + env(safe-area-inset-bottom,0px))}}
+body.editing .explore-hint{display:none}
+/* World-positioned temporary reveal masks; do not intercept touch or clicks. */
+.intro-tile-mask{pointer-events:none!important;background:#fff;opacity:1;transition:opacity .42s ease;will-change:opacity}
+@media(prefers-reduced-motion:reduce){.intro-tile-mask{transition:none!important}.explore-hint{transition:none!important}}
+
+
+/* Homepage 002 integration: keep the experimental map self-contained while
+   using the shared GRAPHIC HAVOC navigation and contact presentation. */
+.home-002{
+  min-height:100dvh;
+  background:#fff;
+}
+.home-002__map-shell{
+  position:fixed;
+  inset:0;
+  width:100%;
+  height:100dvh;
+  overflow:hidden;
+  background:#fff;
+}
+.home-002__contact-panel{
+  position:fixed;
+  left:0;
+  right:0;
+  bottom:0;
+  z-index:900;
+  max-height:calc(100dvh - 44px);
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  transform:translate3d(0,calc(100% + 2px),0);
+  transition:transform 650ms cubic-bezier(.22,.61,.36,1);
+  pointer-events:none;
+  will-change:transform;
+}
+.home-002.is-contact-open .home-002__contact-panel{
+  transform:translate3d(0,0,0);
+  pointer-events:auto;
+}
+.home-002__contact-panel .contact{
+  min-height:0;
+}
+@media(prefers-reduced-motion:reduce){
+  .home-002__contact-panel{transition:none}
+}
