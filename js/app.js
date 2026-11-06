@@ -166,76 +166,19 @@
 
 
   function initializeMediaDefaults() {
-    const videos = [...document.querySelectorAll("video")];
-    const visibleVideos = new Set();
-
-    const prepareVideo = (video) => {
-      // defaultMuted is important for dynamically inserted media: it mirrors
-      // the HTML muted attribute while muted controls the live playback state.
+    document.querySelectorAll("video").forEach((video) => {
       video.autoplay = true;
       video.loop = true;
-      video.defaultMuted = true;
       video.muted = true;
       video.playsInline = true;
       video.setAttribute("autoplay", "");
       video.setAttribute("loop", "");
       video.setAttribute("muted", "");
       video.setAttribute("playsinline", "");
-    };
-
-    const playVideo = (video) => {
-      if (document.hidden || !visibleVideos.has(video)) return;
-
-      // Let play() initiate loading naturally. Avoid forcing load(), which can
-      // reset media state in WebKit after a dynamically injected homepage.
-      const playback = video.play();
-      if (playback?.catch) {
-        playback.catch((error) => {
-          console.warn(
-            "Visible muted video autoplay failed:",
-            video.currentSrc || video.querySelector("source")?.src || "unknown video",
-            error
-          );
-        });
-      }
-    };
-
-    videos.forEach(prepareVideo);
-
-    if ("IntersectionObserver" in window) {
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          const video = entry.target;
-
-          if (entry.isIntersecting && entry.intersectionRatio > 0) {
-            visibleVideos.add(video);
-            playVideo(video);
-          } else {
-            visibleVideos.delete(video);
-            if (!video.paused) video.pause();
-          }
-        });
-      }, { threshold: 0.01 });
-
-      videos.forEach((video) => observer.observe(video));
-
-      document.addEventListener("visibilitychange", () => {
-        if (document.hidden) {
-          videos.forEach((video) => {
-            if (!video.paused) video.pause();
-          });
-          return;
-        }
-
-        visibleVideos.forEach(playVideo);
+      video.play().catch(() => {
+        /* Muted autoplay can still be blocked in unusual browser conditions. */
       });
-    } else {
-      // Conservative fallback for older browsers: preserve normal muted autoplay.
-      videos.forEach((video) => {
-        visibleVideos.add(video);
-        playVideo(video);
-      });
-    }
+    });
 
     document.querySelectorAll("lottie-player").forEach((player) => {
       player.setAttribute("autoplay", "");
@@ -374,20 +317,11 @@
     shuffleChildren(app.querySelector(".selected-work-index__grid"));
   }
 
-  function initializeHomepageBeforeReveal() {
+  function initializeHomepage() {
     setHomepageVariantClass();
     initializeRandomizedOrder();
+    initializeMediaDefaults();
     initializeContactForm();
-  }
-
-  function initializeHomepageMediaAfterReveal() {
-    // Wait until the injected homepage has been painted visibly before asking
-    // WebKit to evaluate autoplay/viewport state for its videos.
-    window.requestAnimationFrame(() => {
-      window.requestAnimationFrame(() => {
-        initializeMediaDefaults();
-      });
-    });
   }
 
   async function loadHomepage() {
@@ -403,10 +337,9 @@
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
       app.innerHTML = await response.text();
-      initializeHomepageBeforeReveal();
+      initializeHomepage();
       await loadHomepageAssets();
       document.documentElement.classList.add("is-ready");
-      initializeHomepageMediaAfterReveal();
       console.info(`Loaded homepage: ${selectedFile} (random loading ${RANDOM_HOMEPAGE_ENABLED ? "enabled" : "disabled"})`);
     } catch (error) {
       console.error("Homepage load failed:", error);
