@@ -165,26 +165,95 @@
   }
 
 
-  function initializeMediaDefaults() {
-    document.querySelectorAll("video").forEach((video) => {
-      video.autoplay = true;
-      video.loop = true;
-      video.muted = true;
-      video.playsInline = true;
-      video.setAttribute("autoplay", "");
-      video.setAttribute("loop", "");
-      video.setAttribute("muted", "");
-      video.setAttribute("playsinline", "");
-      video.play().catch(() => {
-        /* Muted autoplay can still be blocked in unusual browser conditions. */
-      });
+  let videoObserver = null;
+
+  function configureVideo(video) {
+    video.autoplay = true;
+    video.loop = true;
+    video.defaultMuted = true;
+    video.muted = true;
+    video.playsInline = true;
+    video.setAttribute("autoplay", "");
+    video.setAttribute("loop", "");
+    video.setAttribute("muted", "");
+    video.setAttribute("playsinline", "");
+  }
+
+  function playVideo(video) {
+    if (document.hidden) return;
+
+    video.play().catch(() => {
+      /* Respect browser/user autoplay preferences without showing controls. */
     });
+  }
+
+  function videoIsOnScreen(video) {
+    const rect = video.getBoundingClientRect();
+
+    return (
+      rect.bottom > 0 &&
+      rect.right > 0 &&
+      rect.top < window.innerHeight &&
+      rect.left < window.innerWidth
+    );
+  }
+
+  function resumeVisibleVideos() {
+    if (document.hidden) return;
+
+    document.querySelectorAll("video").forEach((video) => {
+      if (videoIsOnScreen(video)) {
+        playVideo(video);
+      }
+    });
+  }
+
+  function initializeMediaDefaults() {
+    const videos = [...document.querySelectorAll("video")];
+
+    videos.forEach(configureVideo);
+    videoObserver?.disconnect();
+
+    if ("IntersectionObserver" in window) {
+      videoObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          const video = entry.target;
+
+          if (entry.isIntersecting && !document.hidden) {
+            playVideo(video);
+          } else {
+            video.pause();
+          }
+        });
+      }, {
+        threshold: 0.01
+      });
+
+      videos.forEach((video) => videoObserver.observe(video));
+    } else {
+      videos.forEach(playVideo);
+    }
 
     document.querySelectorAll("lottie-player").forEach((player) => {
       player.setAttribute("autoplay", "");
       player.setAttribute("loop", "");
     });
+
+    requestAnimationFrame(resumeVisibleVideos);
   }
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+      document.querySelectorAll("video").forEach((video) => video.pause());
+      return;
+    }
+
+    requestAnimationFrame(resumeVisibleVideos);
+  });
+
+  window.addEventListener("pageshow", () => {
+    requestAnimationFrame(resumeVisibleVideos);
+  });
 
 
   function setHomepageVariantClass() {
@@ -320,7 +389,6 @@
   function initializeHomepage() {
     setHomepageVariantClass();
     initializeRandomizedOrder();
-    initializeMediaDefaults();
     initializeContactForm();
   }
 
@@ -340,6 +408,11 @@
       initializeHomepage();
       await loadHomepageAssets();
       document.documentElement.classList.add("is-ready");
+
+      requestAnimationFrame(() => {
+        requestAnimationFrame(initializeMediaDefaults);
+      });
+
       console.info(`Loaded homepage: ${selectedFile} (random loading ${RANDOM_HOMEPAGE_ENABLED ? "enabled" : "disabled"})`);
     } catch (error) {
       console.error("Homepage load failed:", error);

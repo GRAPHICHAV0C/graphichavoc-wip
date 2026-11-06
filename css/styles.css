@@ -44,19 +44,41 @@
 html {
   scroll-behavior: smooth;
   text-size-adjust: 100%;
+  background: var(--c3);
+  overflow-x: hidden;
+  overscroll-behavior-x: none;
 }
 
 html,
 body {
   margin: 0;
   min-height: 100%;
+  width: 100%;
+  max-width: 100%;
 }
 
 body {
+  overflow-x: hidden;
+  overscroll-behavior-x: none;
   background: var(--c2);
   color: var(--c3);
   font-family: "Public Sans", Arial, Helvetica, sans-serif;
   line-height: 1.5;
+}
+
+/* Browser canvas vs. designed page surface.
+   Pages ending in the dark contact/footer use a dark body canvas so iOS
+   rubber-band overscroll never exposes white. Standard /work project content
+   keeps its intended light surface explicitly on <main>. */
+html.homepage-variant--001 body,
+body.work-index-page,
+body.work-project-page,
+body.work-case-study-page {
+  background: var(--c3);
+}
+
+body.work-project-page > main {
+  background: var(--c2);
 }
 
 img,
@@ -249,10 +271,16 @@ select:focus-visible {
   mask: url("../assets/GRAPHIC-HAVOC_wordmark.svg") center / contain no-repeat;
 }
 
-.brand-tab:hover,
 .brand-tab:focus-visible {
   background: var(--c2);
   color: var(--c1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .brand-tab:hover {
+    background: var(--c2);
+    color: var(--c1);
+  }
 }
 
 /* ---------- Hero ---------- */
@@ -264,10 +292,13 @@ select:focus-visible {
 }
 
 .hero-media {
-  width: 100%;
+  display: block;
+  width: calc(100% + 2px);
+  max-width: none;
   height: auto;
+  margin: -1px;
   object-fit: contain;
-  background: var(--c2);
+  background: transparent;
 }
 
 .hero-grid {
@@ -1198,6 +1229,11 @@ video.project-media__asset {
    LAYOUT: half/full intent remains in project.md; at phone widths all project
    content becomes one vertical 16-column stream. */
 @media (max-width: 767px) {
+  .selected-work-index__grid,
+  .work-index__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .project-intro__copy,
   .project-intro__media,
   .project-section__title,
