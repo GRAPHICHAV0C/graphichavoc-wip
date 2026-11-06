@@ -1,12 +1,21 @@
 (() => {
   "use strict";
 
-  /* GRAPHIC HAVOC.com — TEMPORARY GITHUB PAGES WIP TEST BUILD
-   * Root homepage loading is intentionally pinned to homepage 001.
-   * The production random-homepage architecture is temporarily disabled for
-   * functional hosting tests. Do not treat this as the final public behavior.
+  /* GRAPHIC HAVOC.com — homepage loader
+   *
+   * TEMPORARY WIP SETTING:
+   * Keep RANDOM_HOMEPAGE_ENABLED = false until additional homepage variations
+   * are ready for normal use. The random-selection system remains intact below
+   * and can be restored by changing this single value to true.
    */
-  const TEST_HOMEPAGE_FILE = "homepages/001.html";
+  const RANDOM_HOMEPAGE_ENABLED = false;
+  const DEFAULT_HOMEPAGE = "001";
+  const HOMEPAGE_FILES = {
+    "001": "homepages/001.html",
+    "002": "homepages/002/index.html",
+    "003": "homepages/003.html"
+  };
+  const LAST_HOMEPAGE_STORAGE_KEY = "graphichavoc:last-homepage";
   const app = document.getElementById("app");
 
 
@@ -157,19 +166,76 @@
 
 
   function initializeMediaDefaults() {
-    document.querySelectorAll("video").forEach((video) => {
+    const videos = [...document.querySelectorAll("video")];
+    const visibleVideos = new Set();
+
+    const prepareVideo = (video) => {
+      // defaultMuted is important for dynamically inserted media: it mirrors
+      // the HTML muted attribute while muted controls the live playback state.
       video.autoplay = true;
       video.loop = true;
+      video.defaultMuted = true;
       video.muted = true;
       video.playsInline = true;
       video.setAttribute("autoplay", "");
       video.setAttribute("loop", "");
       video.setAttribute("muted", "");
       video.setAttribute("playsinline", "");
-      video.play().catch(() => {
-        /* Muted autoplay can still be blocked in unusual browser conditions. */
+    };
+
+    const playVideo = (video) => {
+      if (document.hidden || !visibleVideos.has(video)) return;
+
+      // Let play() initiate loading naturally. Avoid forcing load(), which can
+      // reset media state in WebKit after a dynamically injected homepage.
+      const playback = video.play();
+      if (playback?.catch) {
+        playback.catch((error) => {
+          console.warn(
+            "Visible muted video autoplay failed:",
+            video.currentSrc || video.querySelector("source")?.src || "unknown video",
+            error
+          );
+        });
+      }
+    };
+
+    videos.forEach(prepareVideo);
+
+    if ("IntersectionObserver" in window) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          const video = entry.target;
+
+          if (entry.isIntersecting && entry.intersectionRatio > 0) {
+            visibleVideos.add(video);
+            playVideo(video);
+          } else {
+            visibleVideos.delete(video);
+            if (!video.paused) video.pause();
+          }
+        });
+      }, { threshold: 0.01 });
+
+      videos.forEach((video) => observer.observe(video));
+
+      document.addEventListener("visibilitychange", () => {
+        if (document.hidden) {
+          videos.forEach((video) => {
+            if (!video.paused) video.pause();
+          });
+          return;
+        }
+
+        visibleVideos.forEach(playVideo);
       });
-    });
+    } else {
+      // Conservative fallback for older browsers: preserve normal muted autoplay.
+      videos.forEach((video) => {
+        visibleVideos.add(video);
+        playVideo(video);
+      });
+    }
 
     document.querySelectorAll("lottie-player").forEach((player) => {
       player.setAttribute("autoplay", "");
@@ -234,6 +300,50 @@
   }
 
 
+  function requestedHomepageFile() {
+    const params = new URLSearchParams(window.location.search);
+    const requested = params.get("homepage")?.trim();
+    return requested ? HOMEPAGE_FILES[requested] || null : null;
+  }
+
+  function chooseRandomHomepageFile() {
+    const files = Object.values(HOMEPAGE_FILES);
+    if (files.length <= 1) return files[0];
+
+    let previous = null;
+    try {
+      previous = window.localStorage.getItem(LAST_HOMEPAGE_STORAGE_KEY);
+    } catch (_) {
+      /* Homepage selection still works if storage is unavailable. */
+    }
+
+    const candidates = files.filter((file) => file !== previous);
+    const pool = candidates.length ? candidates : files;
+    const selected = pool[randomIndex(pool.length)];
+
+    try {
+      window.localStorage.setItem(LAST_HOMEPAGE_STORAGE_KEY, selected);
+    } catch (_) {
+      /* Storage is only used to avoid immediately repeating a homepage. */
+    }
+
+    return selected;
+  }
+
+  function selectHomepageFile() {
+    // Explicit development overrides remain available while random loading is off:
+    // ?homepage=001, ?homepage=002, ?homepage=003
+    const requested = requestedHomepageFile();
+    if (requested) return requested;
+
+    if (!RANDOM_HOMEPAGE_ENABLED) {
+      return HOMEPAGE_FILES[DEFAULT_HOMEPAGE];
+    }
+
+    return chooseRandomHomepageFile();
+  }
+
+
   function randomIndex(maxExclusive) {
     if (maxExclusive <= 1) return 0;
 
@@ -264,18 +374,27 @@
     shuffleChildren(app.querySelector(".selected-work-index__grid"));
   }
 
-  function initializeHomepage() {
+  function initializeHomepageBeforeReveal() {
     setHomepageVariantClass();
     initializeRandomizedOrder();
-    initializeMediaDefaults();
     initializeContactForm();
   }
 
+  function initializeHomepageMediaAfterReveal() {
+    // Wait until the injected homepage has been painted visibly before asking
+    // WebKit to evaluate autoplay/viewport state for its videos.
+    window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(() => {
+        initializeMediaDefaults();
+      });
+    });
+  }
+
   async function loadHomepage() {
-    const selectedFile = TEST_HOMEPAGE_FILE;
+    const selectedFile = selectHomepageFile();
 
     try {
-      const fragmentUrl = `${selectedFile}?v=v021`;
+      const fragmentUrl = `${selectedFile}?v=v021-wip-home001`;
       const response = await fetch(fragmentUrl, {
         cache: "no-store",
         credentials: "same-origin"
@@ -284,10 +403,11 @@
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
       app.innerHTML = await response.text();
-      initializeHomepage();
+      initializeHomepageBeforeReveal();
       await loadHomepageAssets();
       document.documentElement.classList.add("is-ready");
-      console.info(`Loaded WIP testing homepage: ${selectedFile}`);
+      initializeHomepageMediaAfterReveal();
+      console.info(`Loaded homepage: ${selectedFile} (random loading ${RANDOM_HOMEPAGE_ENABLED ? "enabled" : "disabled"})`);
     } catch (error) {
       console.error("Homepage load failed:", error);
       app.innerHTML = `
