@@ -45,7 +45,7 @@ html {
   scroll-behavior: smooth;
   text-size-adjust: 100%;
   background: var(--c3);
-  overflow-x: hidden;
+  overflow-x: clip;
   overscroll-behavior-x: none;
 }
 
@@ -58,7 +58,7 @@ body {
 }
 
 body {
-  overflow-x: hidden;
+  overflow-x: clip;
   overscroll-behavior-x: none;
   background: var(--c2);
   color: var(--c3);
@@ -91,6 +91,27 @@ svg {
 
 a {
   color: inherit;
+}
+
+/* A-104 — Text Links
+   A-103 color behavior:
+   Default C1.
+   CB1 / light hover + keyboard focus: C3.
+   CB2 hover + keyboard focus: C2. */
+.text-link {
+  color: var(--c1);
+  text-decoration: none;
+  transition: color 200ms ease-in-out;
+}
+
+.text-link:hover,
+.text-link:focus-visible {
+  color: var(--c3);
+}
+
+.case-study--cb2 .text-link:hover,
+.case-study--cb2 .text-link:focus-visible {
+  color: var(--c2);
 }
 
 button,
@@ -519,6 +540,11 @@ select:focus-visible {
 
 .case-row {
   margin: 0 0 var(--s3); /* S3 between major rows */
+}
+
+.case-media-sequence {
+  display: grid;
+  gap: var(--s3); /* S3 between consecutive media groups */
 }
 
 .case-media-grid {
@@ -1290,3 +1316,4 @@ video.project-media__asset {
     transition: none;
   }
 }
+

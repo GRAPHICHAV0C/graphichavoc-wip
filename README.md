@@ -4,20 +4,39 @@
 
 This package is a **temporary work-in-progress hosting test**, not a public release and not a new numbered site version.
 
-- Root `/` is intentionally pinned to `homepages/001.html`.
-- Random homepage selection is temporarily disabled.
+- Root `/` is intentionally pinned to homepage `001` while `RANDOM_HOMEPAGE_ENABLED = false` in `js/app.js`.
+- The random homepage selection system remains intact and is temporarily disabled with that single switch.
 - `homepages/001.html` remains the active homepage source and is not removed.
 - `/work/` remains fully functional and continues to show the complete project archive.
 - Homepage Selected Work card randomization remains active inside homepage `001`.
-- Homepage variants `002` and `003` remain in the package but are not selected by the root loader during this test.
+- Homepage variants `002` and `003` remain in the package but are not selected randomly during this test. Explicit development overrides remain available with `?homepage=001`, `?homepage=002`, and `?homepage=003`.
 - Root and generated `/work/` pages use `noindex, nofollow` for this WIP deployment.
 - `robots.txt` does not advertise sitemaps and blocks crawler access to `/homepages/` fragments.
 - `.nojekyll` is included for GitHub Pages static-file testing.
 - Existing email/contact forms are intentionally unchanged.
-- Before a public launch, restore the intended random-homepage loader and review indexing directives.
+- When additional homepage variations are ready, restore random loading by changing `RANDOM_HOMEPAGE_ENABLED` to `true`; review indexing directives separately before public launch.
 
 This build makes `/work/` the single permanent archive/source of truth for both standard projects and featured case studies.
 
+
+## Local WIP source of truth
+
+The active local working site is:
+
+```text
+/Volumes/SSD_4TB_01A/GRAPHICHAVOC/web/2026/graphichavoc-dot-com/current
+```
+
+Treat `/current` as the single source of truth for ongoing website development and localhost testing. GitHub Pages WIP deployments should be made from this current build rather than maintained as a separate editable local website. The GitHub Pages repository is a testing deployment target, not a second source tree.
+
+Local testing:
+
+```bash
+cd /Volumes/SSD_4TB_01A/GRAPHICHAVOC/web/2026/graphichavoc-dot-com/current
+python3 -m http.server 8000
+```
+
+Then open `http://localhost:8000/`.
 
 ## Homepage 002 — experimental map integration
 
@@ -78,7 +97,7 @@ work/
     ...
 ```
 
-Numbered filenames define narrative media order. Unnumbered metadata assets such as the case-study logo do not participate in the numbered media sequence.
+The order of media blocks in `project.md` defines narrative presentation order. Numbered local-media filenames remain useful organizational identifiers, but their numbers do not determine display order and do not need to be consecutive. Two-digit numeric prefixes are still required for numbered local media and must be unique; gaps are allowed. Unnumbered metadata assets such as the case-study logo do not participate in the numbered media sequence.
 
 Intended workflow:
 
@@ -161,6 +180,8 @@ CAPTION: Concise factual caption.
 ALT: Accessible description of the embedded video.
 ```
 
+Media render in the order their blocks appear in `project.md`, regardless of gaps in local-media filename numbering. YouTube embeds can be inserted anywhere in that sequence without renaming subsequent local files.
+
 Every rendered case-study image/video/embed uses the same `CAPTION:` source. YouTube `ALT:` is used as the iframe title/accessible label.
 
 ## Current FPO case-study assets
@@ -184,7 +205,7 @@ A successful build reports the project folders found and:
 Validation passed.
 ```
 
-The builder validates required metadata, referenced files, preview dimensions, lowercase narrative media names, sequential numeric prefixes, captions, ALT text, case-study theme/logo metadata, and supported layout directives.
+The builder validates required metadata, referenced files, preview dimensions, lowercase narrative media names, required two-digit numeric prefixes, unique numeric prefixes, captions, ALT text, case-study theme/logo metadata, and supported layout directives. Numeric gaps are allowed; unused local media still fail validation so project folders do not accumulate unreferenced assets.
 
 ## Local testing
 
@@ -193,7 +214,7 @@ Use two Terminal tabs/windows.
 ### Terminal 1 — local server
 
 ```bash
-cd /Volumes/SSD_4TB_01A/GRAPHICHAVOC/web/2026/graphichavoc-dot-com
+cd /Volumes/SSD_4TB_01A/GRAPHICHAVOC/web/2026/graphichavoc-dot-com/current
 python3 -m http.server 8000
 ```
 
@@ -202,7 +223,7 @@ Leave this running.
 ### Terminal 2 — rebuild `/work/`
 
 ```bash
-cd /Volumes/SSD_4TB_01A/GRAPHICHAVOC/web/2026/graphichavoc-dot-com
+cd /Volumes/SSD_4TB_01A/GRAPHICHAVOC/web/2026/graphichavoc-dot-com/current
 python3 tools/build_work.py
 ```
 
@@ -211,7 +232,7 @@ Review:
 - `http://localhost:8000/`
 - `http://localhost:8000/work/`
 - `http://localhost:8000/work/amplifier-security-identity-system/`
-- `http://localhost:8000/work/relate/`
+- `http://localhost:8000/work/relate-identity-system/`
 - existing standard project pages such as `/work/americas-veterans/`
 
 Do not test the random homepage loader through `file://`; homepage fragments are loaded with `fetch()`.

@@ -30,21 +30,13 @@ Amplifier Security is an AI-driven cybersecurity platform built for enterprise e
 
 Building from an existing logotype and an earlier version of the Avatar, GRAPHIC HAVOC refined the Avatar and expanded the identity into AMPY, custom iconography, infographics, imagery, motion, campaigns, product touchpoints, web experiences, and environmental applications. Recent work has focused on strengthening the relationships between those elements and extending the system as Amplifier's communication needs continue to evolve.
 
-### 02_amplifier-security-identity-system_fpo-01.svg
+### 02_amplifier-security_advertisement_wild-thangs-group-01.webp
 
-LAYOUT: half
+LAYOUT: full
 
-CAPTION: FPO — Amplifier case study media placeholder.
+CAPTION: Amplifier Security advertisement from the 2026 *Wild TH@NGS* campaign. Creative, character development, art direction, and design by GRAPHIC HAVOC.
 
-ALT: FPO 1080 by 1350 placeholder for Amplifier case study media.
-
-### 03_amplifier-security-identity-system_fpo-02.svg
-
-LAYOUT: half
-
-CAPTION: FPO — Amplifier case study media placeholder.
-
-ALT: FPO 1080 by 1350 placeholder for Amplifier case study media.
+ALT: FPO
 
 ## Clarity Without Losing Credibility
 
@@ -66,29 +58,29 @@ Through ongoing collaboration with Amplifier and copywriting partners, technical
 
 The objective was not simply to say less. It was to determine what information mattered most and give it enough structure, personality, and authority to be understood quickly.
 
-### 05_amplifier-security-identity-system_fpo-03.svg
+### 05_amplifier-security_ampy-design-system.svg
 
 LAYOUT: half-stack
 
-CAPTION: FPO — Amplifier case study media placeholder.
+CAPTION: AMPY character design system developed by GRAPHIC HAVOC for Amplifier Security, using shared geometry, grids, curves, spacing, and line weights derived from the brand Avatar.
 
-ALT: FPO 1920 by 1080 placeholder for Amplifier case study media.
+ALT: AMPY character construction shown on the Amplifier Security design grid, demonstrating the shared geometry, proportions, curves, spacing, and line-weight system used to build the mascot.
 
-### 06_amplifier-security-identity-system_fpo-04.svg
+### 06_amplifier-security_ampy-expressions.svg
 
 LAYOUT: half-stack
 
-CAPTION: FPO — Amplifier case study media placeholder.
+CAPTION: AMPY expression system developed by GRAPHIC HAVOC for Amplifier Security, extending the mascot across a range of emotions, reactions, and product communication needs.
 
-ALT: FPO 1920 by 1080 placeholder for Amplifier case study media.
+ALT: Grid of AMPY mascot expressions for Amplifier Security showing varied emotions and reactions, including surprised, confused, smiling, cool, processing, questioning, and playful character states.
 
-### 07_amplifier-security-identity-system_fpo-05.svg
+### 07_amplifier-security_ampy-in-product.webm
 
 LAYOUT: half
 
-CAPTION: FPO — Amplifier case study media placeholder.
+CAPTION: AMPY communicating with employees through the Amplifier Security product. AMPY character design and brand identity system by GRAPHIC HAVOC.
 
-ALT: FPO 1080 by 1350 placeholder for Amplifier case study media.
+ALT: AMPY, Amplifier Security’s mascot and AI persona, communicating with an employee in Slack about a security vulnerability, with options to view more information, get instructions, reschedule remediation, and ask follow-up questions.
 
 ## More Than a Mascot
 
@@ -96,13 +88,13 @@ AMPY is Amplifier's mascot and brand ambassador. Built from the Avatar's foundat
 
 AMPY also appears inside the product, giving Amplifier's AI a familiar presence in employee-facing interactions. Its range of expressions helps communicate emotion, intent, and context while making technical security communication feel more direct and human. AMPY functions as part of both the product experience and the broader brand communication system rather than as a decorative character.
 
-### 08_amplifier-security-identity-system_fpo-06.svg
+### YOUTUBE: https://youtu.be/GeUDAHYMkrU
 
 LAYOUT: full
 
-CAPTION: FPO — Amplifier case study media placeholder.
+CAPTION: Amplifier Security brand identity and design system presentation by GRAPHIC HAVOC.
 
-ALT: FPO 1920 by 1080 placeholder for Amplifier case study media.
+ALT: Amplifier Security brand identity and design system presentation showing logo design, AMPY mascot, iconography, imagery, motion design, infographics, product applications, and environmental branding by GRAPHIC HAVOC.
 
 ## Built From a Common Geometry
 
@@ -114,37 +106,32 @@ Those principles informed AMPY, the custom icon library, illustration, and motio
 
 LAYOUT: half
 
-CAPTION: FPO — Amplifier case study media placeholder.
+CAPTION: Amplifier Security identity system in motion, combining the brand’s monochromatic imagery treatment with typography, custom iconography, AMPY, and graphic messaging. Creative direction, art direction, motion design, and brand design by GRAPHIC HAVOC.
 
-ALT: FPO 1080 by 1350 placeholder for Amplifier case study media.
+ALT: Motion design sequence for Amplifier Security showing purple monochromatic imagery combined with bold typography, custom icons, AMPY expressions, cybersecurity messaging, and graphic overlays across video and static brand applications.
 
-### 10_amplifier-security-identity-system_fpo-08.svg
+### 10_amplifier-security_jnuc-26-event.webm
 
 LAYOUT: half
 
-CAPTION: FPO — Amplifier case study media placeholder.
+CAPTION: Amplifier Security environment and event T-shirt for JNUC 2026. Creative direction, art direction, environmental design, and graphic design by GRAPHIC HAVOC.
 
-ALT: FPO 1080 by 1350 placeholder for Amplifier case study media.
+ALT: Video showing the Amplifier Security JNUC 2026 event environment with a large speaker-inspired booth graphic, Amplifier branding, “AI for the People” artwork, digital display, and a black giveaway T-shirt featuring a speaker graphic and “Workforce Security” lettering.
+
+### 11_amplifier-security_advertisement_wild-thangs-icecream-creep.webp
+
+LAYOUT: full
+
+CAPTION: “Workforce Security” advertisement featuring Ice Cream CREEP from Amplifier Security’s 2026 *Wild TH@NGS* campaign. Concept, character development, art direction, and design by GRAPHIC HAVOC.
+
+ALT: Amplifier Security Wild TH@NGS advertisement featuring Ice Cream CREEP, a purple troll-like character holding a soft-serve ice cream cone beside the headline “Workforce Security” and the Amplifier logo.
 
 ## Built to Scale
 
 The same system supports very different kinds of communication without requiring each application to look identical. It can clarify technical workflows through infographics, support product marketing, extend into advertising campaigns, and scale into presentations, social content, web experiences, events, and physical environments.
 
-The current Amplifier website, creatively directed, art directed, designed, and built by GRAPHIC HAVOC, is one expression of that larger system. Wild TH@NGS demonstrates its ability to become more expressive and campaign-driven, while the JNUC environment shows how the identity extends into physical space.
+The current [[Amplifier website | https://amplifiersecurity.com]], creatively directed, art directed, designed, and built by GRAPHIC HAVOC, is one expression of that larger system. Wild TH@NGS demonstrates its ability to become more expressive and campaign-driven, while the JNUC environment shows how the identity extends into physical space.
 
-### 11_amplifier-security-identity-system_fpo-09.svg
-
-LAYOUT: full
-
-CAPTION: FPO — Amplifier case study media placeholder.
-
-ALT: FPO 1920 by 1080 placeholder for Amplifier case study media.
-
-## Designed to Move
-
-Shared geometry allows the Avatar, AMPY, iconography, and infographic elements to transition between forms without feeling like separate visual languages.
-
-Motion can reveal relationships, organize information, reinforce character, and guide attention. Because those behaviors were considered as part of the system, animation functions as an extension of the identity rather than an effect applied after the fact.
 
 ## Outcome
 

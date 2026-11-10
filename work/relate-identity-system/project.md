@@ -53,13 +53,13 @@ Handwriting made participation personal. Each person writes the six letters R, E
 
 The handwriting is not standardized. Each mark retains the character of the person who made it while gaining new meaning through its relationship to other contributions. What begins as individual expression becomes a shared word.
 
-### 04_relate-identity-system_fpo-01.svg
+### 04_relate-identity-system_collected-memory-scale-variation.svg
 
 LAYOUT: full
 
-CAPTION: FPO — RELATE case study media placeholder.
+CAPTION: Within the RELATE identity system designed by GRAPHIC HAVOC, dramatic shifts in letter scale expand the expressive range of each Collected Memory.
 
-ALT: FPO 1920 by 1080 placeholder for RELATE case study media.
+ALT: RELATE Collected Memory assembled from handwritten letter contributions at dramatically different scales within the identity system designed by GRAPHIC HAVOC.
 
 ## Different Hands, One Recognizable Word
 

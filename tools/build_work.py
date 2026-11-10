@@ -473,13 +473,12 @@ def validate_project(p: Project):
         if n is None:
             raise ValueError(f"{p.slug}: media filename requires two-digit sequence prefix: {name}")
         numbers.append(n)
-    expected = list(range(1, len(numbers) + 1))
-    if sorted(numbers) != expected:
-        raise ValueError(f"{p.slug}: media sequence numbers must be consecutive {expected}, found {sorted(numbers)}")
 
-    ref_numbers = [numeric_prefix(name) for name in refs]
-    if all(n is not None for n in ref_numbers) and ref_numbers != sorted(ref_numbers):
-        print(f"WARNING: {p.slug}: project.md media references are out of numeric filename order: {ref_numbers}")
+    if len(numbers) != len(set(numbers)):
+        raise ValueError(f"{p.slug}: media sequence numbers must be unique: {sorted(numbers)}")
+
+    # Presentation order is defined by project.md.
+    # Numeric filename prefixes are organizational identifiers; gaps are allowed.
 
 
 def preview_mime(filename: str):
@@ -494,9 +493,65 @@ def preview_mime(filename: str):
     }.get(ext, "image/webp")
 
 
+def inline_markdown(text: str) -> str:
+    """Render safe inline italics and [[label | URL]] links from project.md."""
+
+    def render_emphasis(value: str) -> str:
+        return re.sub(
+            r"(?<!\*)\*([^\n*]+?)\*(?!\*)",
+            r"<em>\1</em>",
+            value,
+        )
+
+    link_pattern = re.compile(
+        r"\[\[\s*(.*?)\s*\|\s*(.*?)\s*\]\]"
+    )
+
+    parts = []
+    last = 0
+
+    for match in link_pattern.finditer(text):
+        # Plain text before the link.
+        parts.append(
+            render_emphasis(
+                escape(text[last:match.start()])
+            )
+        )
+
+        label_raw = match.group(1).strip()
+        href_raw = match.group(2).strip()
+
+        label = render_emphasis(escape(label_raw))
+        href = escape(href_raw, quote=True)
+
+        if href_raw.startswith(("https://", "http://")):
+            parts.append(
+                f'<a class="text-link" href="{href}" target="_blank" '
+                f'rel="noopener noreferrer">{label}</a>'
+            )
+        elif href_raw.startswith("/"):
+            parts.append(
+                f'<a class="text-link" href="{href}">{label}</a>'
+            )
+        else:
+            # Unsupported target: display literally rather than creating
+            # an unsafe or ambiguous link.
+            parts.append(escape(match.group(0)))
+
+        last = match.end()
+
+    # Remaining text after the final link.
+    parts.append(
+        render_emphasis(
+            escape(text[last:])
+        )
+    )
+
+    return "".join(parts)
+
 def media_html(p: Project, m: Media, level="../../"):
     alt = escape(m.alt, quote=True)
-    cap = escape(m.caption)
+    cap = inline_markdown(m.caption)
     layout_class = f" project-media--{m.layout}" if m.layout else ""
 
     if m.kind == "youtube":
@@ -648,7 +703,7 @@ def contact_footer(prefix: str):
 
 def case_asset_html(m: Media, asset_prefix: str):
     alt = escape(m.alt, quote=True)
-    cap = escape(m.caption)
+    cap = inline_markdown(m.caption)
     if m.kind == "youtube":
         src = escape(m.embed_url or "", quote=True)
         asset = (
@@ -706,16 +761,20 @@ def case_media_group_html(media: List[Media], asset_prefix: str):
         else:
             i += 1
         groups.append('<div class="case-media-grid">\n' + "\n".join(case_asset_html(item, asset_prefix) for item in half_items) + "\n</div>")
-    return "\n".join(groups)
+    return (
+        '<div class="case-media-sequence">\n'
+        + "\n".join(groups)
+        + "\n</div>"
+    )
 
 
 def render_case_section(section: Section, media: List[Media], asset_prefix: str):
     media_html = case_media_group_html(media, asset_prefix)
-    heading = escape(section.heading)
+    heading = inline_markdown(section.heading)
     heading_id = escape(slugify_heading(section.heading), quote=True)
     if section.copy_layout == "split" and len(section.paragraphs) > 1:
-        lead = f'<p>{escape(section.paragraphs[0])}</p>'
-        right = "\n".join(f'<p>{escape(x)}</p>' for x in section.paragraphs[1:])
+        lead = f'<p>{inline_markdown(section.paragraphs[0])}</p>'
+        right = "\n".join(f'<p>{inline_markdown(x)}</p>' for x in section.paragraphs[1:])
         copy_html = f'''<div class="case-caption-grid case-caption-grid--with-lead-copy">
           <div class="case-lead-column">
             <h3 class="case-lead t3 w2" id="{heading_id}">{heading}</h3>
@@ -724,7 +783,7 @@ def render_case_section(section: Section, media: List[Media], asset_prefix: str)
           <div class="case-copy t2 w1">{right}</div>
         </div>'''
     else:
-        right = "\n".join(f'<p>{escape(x)}</p>' for x in section.paragraphs)
+        right = "\n".join(f'<p>{inline_markdown(x)}</p>' for x in section.paragraphs)
         copy_html = f'''<div class="case-caption-grid">
           <h3 class="case-lead t3 w2" id="{heading_id}">{heading}</h3>
           <div class="case-copy t2 w1">{right}</div>
@@ -737,7 +796,7 @@ def render_case_section(section: Section, media: List[Media], asset_prefix: str)
 
 def render_case_study_article(p: Project, asset_prefix: str = ""):
     theme = p.color_theme.lower()
-    overview = "\n".join(f'<p>{escape(x)}</p>' for x in p.intro)
+    overview = "\n".join(f'<p>{inline_markdown(x)}</p>' for x in p.intro)
     logo_src = escape(asset_prefix + str(p.logo), quote=True)
     logo_alt = escape(p.logo_alt, quote=True)
 
@@ -764,7 +823,7 @@ def render_case_study_article(p: Project, asset_prefix: str = ""):
     if outcome:
         outcome_copy = " ".join(outcome.paragraphs)
         outcome_html = f'''<section class="case-outcome" aria-label="{escape(p.title, quote=True)} outcome">
-        <p class="case-outcome__copy t3 w2">{escape(outcome_copy)}</p>
+        <p class="case-outcome__copy t3 w2">{inline_markdown(outcome_copy)}</p>
       </section>'''
 
     return f'''<article class="case-study case-study--{theme}" aria-labelledby="{escape(p.slug, quote=True)}-case-title">
@@ -845,14 +904,14 @@ def render_project(p: Project):
 
     title_display = escape(p.title)
     disciplines = " + ".join(escape(x) for x in p.disciplines)
-    intro = "\n".join(f'<p>{escape(x)}</p>' for x in p.intro)
+    intro = "\n".join(f'<p>{inline_markdown(x)}</p>' for x in p.intro)
 
     blocks = []
     for s in p.sections:
         blocks.append(media_group_html(p, s.media_before))
-        copy = "\n".join(f'<p>{escape(x)}</p>' for x in s.paragraphs)
+        copy = "\n".join(f'<p>{inline_markdown(x)}</p>' for x in s.paragraphs)
         blocks.append(f'''<section class="project-section" aria-labelledby="{escape(slugify_heading(s.heading), quote=True)}">
-          <h2 class="project-section__title t3 w2" id="{escape(slugify_heading(s.heading), quote=True)}">{escape(s.heading)}</h2>
+          <h2 class="project-section__title t3 w2" id="{escape(slugify_heading(s.heading), quote=True)}">{inline_markdown(s.heading)}</h2>
           <div class="project-section__copy t2 w1">{copy}</div>
         </section>''')
     if p.trailing_media:
