@@ -73,25 +73,25 @@ All Collected Memories can coexist across the identity. Recognition comes from t
 
 LAYOUT: half-stack
 
-CAPTION: FPO — RELATE case study media placeholder.
+CAPTION: GRAPHIC HAVOC designed the RELATE “Write Your Letters” marker as part of the participation system for contributing handwritten letters to the Letter Library.
 
-ALT: FPO 1920 by 1080 placeholder for RELATE case study media.
+ALT: Black-and-white RELATE marker mockup labeled “Write Your Letters,” designed for participants to contribute handwritten letters to the identity system.
 
 ### 06_relate-identity-system_collected-memory.webp
 
 LAYOUT: half-stack
 
-CAPTION: FPO — RELATE case study media placeholder.
+CAPTION: A handwritten R, E, L, A, T, and E prepared for contribution to the RELATE Letter Library, where individual letterforms can become part of future Collected Memories.
 
-ALT: FPO 1920 by 1080 placeholder for RELATE case study media.
+ALT: Handwritten R, E, L, A, T, and E spaced individually on white paper beside a black marker for contribution to the RELATE Letter Library.
 
 ### 07_relate-identity-system_composer.png
 
 LAYOUT: half
 
-CAPTION: FPO — RELATE case study media placeholder.
+CAPTION: RELATE Composer by GRAPHIC HAVOC showing one six-letter combination selected from the Letter Library before final optical refinement.
 
-ALT: FPO 1080 by 1350 placeholder for RELATE case study media.
+ALT: RELATE Composer interface showing handwritten R, E, L, A, T, and E selections with controls to randomize individual letters or assemble a new combination.
 
 ## Making a Living Identity Practical
 
@@ -103,7 +103,7 @@ Composer automates the repetitive work of randomly selecting and assembling lett
 
 That distinction keeps the process scalable without removing the human decisions that give each Collected Memory its final form.
 
-### 08_relate-identity-system_fpo-05.svg
+### YOUTUBE: https://youtu.be/mKDqu4M_a-E
 
 LAYOUT: full
 
@@ -129,17 +129,17 @@ The current motion language follows the same principle. Typography, color, layou
 
 LAYOUT: half
 
-CAPTION: FPO — RELATE case study media placeholder.
+CAPTION: The RELATE identity system designed by GRAPHIC HAVOC in use as Deeyah Khan speaks during a film screening and conversation in Strasbourg, supported by the Council of Europe and European Parliament.
 
-ALT: FPO 1080 by 1350 placeholder for RELATE case study media.
+ALT: Deeyah Khan speaking at a panel in Strasbourg with a projected RELATE film-screening graphic behind her featuring the handwritten identity system.
 
 ### 10_relate-identity-system_living-record.svg
 
 LAYOUT: half
 
-CAPTION: FPO — RELATE case study media placeholder.
+CAPTION: GRAPHIC HAVOC developed the RELATE Living Record to make participation visible over time, creating useful evidence for reporting, funding, and future growth. Figures shown are illustrative.
 
-ALT: FPO 1080 by 1350 placeholder for RELATE case study media.
+ALT: RELATE Living Record concept showing illustrative counts for contributed handwritten letters, Collected Memories, and contributors.
 
 ## Participation Becomes Evidence
 
@@ -155,9 +155,9 @@ Rather than simply telling the story of participation, the identity itself becom
 
 LAYOUT: full
 
-CAPTION: FPO — RELATE case study media placeholder.
+CAPTION: Out-of-home concept by GRAPHIC HAVOC showing how the RELATE identity can scale across multiple subjects, Collected Memories, and project-specific color palettes.
 
-ALT: FPO 1920 by 1080 placeholder for RELATE case study media.
+ALT: RELATE out-of-home poster mockup on an urban wall featuring President Juan Manuel Santos, Zarlasht Halaimzai, and Jane Ball with varied handwritten wordmarks and color palettes.
 
 ## Recognition Without Repetition
 
