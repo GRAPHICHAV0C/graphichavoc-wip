@@ -1,5 +1,45 @@
 /* GRAPHIC HAVOC.com — v017 shared production styles */
 
+/* Public Sans — self-hosted variable font (SIL Open Font License 1.1, see assets/fonts/public-sans-OFL.txt).
+   One file per style covers every weight 100–900 (site uses --w1 to --w4).
+   Latin is preloaded in each page <head>; Latin Extended downloads only if a page uses those characters. */
+@font-face {
+  font-family: "Public Sans";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("../assets/fonts/public-sans-latin-wght-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+
+@font-face {
+  font-family: "Public Sans";
+  font-style: italic;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("../assets/fonts/public-sans-latin-wght-italic.woff2") format("woff2");
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+
+@font-face {
+  font-family: "Public Sans";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("../assets/fonts/public-sans-latin-ext-wght-normal.woff2") format("woff2");
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+
+@font-face {
+  font-family: "Public Sans";
+  font-style: italic;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("../assets/fonts/public-sans-latin-ext-wght-italic.woff2") format("woff2");
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+
+
 :root {
   /* A-103 — Color */
   --c1: #4285f4; /* Valley Blue */
@@ -672,6 +712,12 @@ iframe.case-media {
   padding-top: 0;
 }
 
+/* Keep featured standalone case-study pages aligned with featured:false
+   project pages: both begin their visible content at S3 + S2. */
+.work-case-study-page.case-study-featured .case-study {
+  padding-top: calc(var(--s3) + var(--s2));
+}
+
 /* ---------- Selected Work ---------- */
 
 .selected-work {
@@ -1105,6 +1151,12 @@ iframe.case-media {
 /* ---------- Generated /work project template ---------- */
 .project-page {
   padding-top: 0;
+}
+
+/* Standalone /work project pages marked featured:false use the full
+   A-101 top rhythm: outer S3 plus the existing SW/S2 intro inset. */
+.work-project-page.project-not-featured .project-page {
+  padding-top: var(--s3);
 }
 
 .project-intro {

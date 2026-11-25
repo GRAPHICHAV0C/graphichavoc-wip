@@ -392,19 +392,34 @@
     initializeContactForm();
   }
 
+  /* The root index.html ships with homepage 001 already inlined by
+   * tools/build_work.py (see PRERENDERED_HOMEPAGE markers), so crawlers and
+   * visitors without JavaScript receive the full homepage. When the selected
+   * variant matches the pre-rendered one, hydrate it in place instead of
+   * fetching it again. Any other variant is fetched and replaces it. */
+  function prerenderedHomepageFile() {
+    const root = app.querySelector("[data-homepage-variant]");
+    const variant = root?.dataset.homepageVariant?.trim();
+    return variant ? HOMEPAGE_FILES[variant] || null : null;
+  }
+
   async function loadHomepage() {
     const selectedFile = selectHomepageFile();
+    const usePrerendered = prerenderedHomepageFile() === selectedFile;
 
     try {
-      const fragmentUrl = `${selectedFile}?v=v021-wip-home001`;
-      const response = await fetch(fragmentUrl, {
-        cache: "no-store",
-        credentials: "same-origin"
-      });
+      if (!usePrerendered) {
+        const fragmentUrl = `${selectedFile}?v=v021-wip-home001`;
+        const response = await fetch(fragmentUrl, {
+          cache: "no-store",
+          credentials: "same-origin"
+        });
 
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
-      app.innerHTML = await response.text();
+        app.innerHTML = await response.text();
+      }
+
       initializeHomepage();
       await loadHomepageAssets();
       document.documentElement.classList.add("is-ready");
@@ -413,7 +428,7 @@
         requestAnimationFrame(initializeMediaDefaults);
       });
 
-      console.info(`Loaded homepage: ${selectedFile} (random loading ${RANDOM_HOMEPAGE_ENABLED ? "enabled" : "disabled"})`);
+      console.info(`Loaded homepage: ${selectedFile} (${usePrerendered ? "pre-rendered" : "fetched"}, random loading ${RANDOM_HOMEPAGE_ENABLED ? "enabled" : "disabled"})`);
     } catch (error) {
       console.error("Homepage load failed:", error);
       app.innerHTML = `

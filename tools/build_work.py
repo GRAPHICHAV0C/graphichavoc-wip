@@ -34,6 +34,7 @@ except Exception:
 ROOT = Path(__file__).resolve().parents[1]
 WORK_DIR = ROOT / "work"
 HOME_001 = ROOT / "homepages" / "001.html"
+ROOT_INDEX = ROOT / "index.html"
 SITE = "https://graphichavoc.com"
 
 IGNORED_NAMES = {".DS_Store"}
@@ -879,11 +880,12 @@ def render_case_study_page(p: Project):
   <meta name="twitter:image" content="{og_image}">
   <meta name="twitter:image:alt" content="{escape(p.preview_alt, quote=True)}">
   <script type="application/ld+json">{jsonld}</script>
-  <link rel="stylesheet" href="../../css/styles.css?v=v019bc">
+  <link rel="preload" href="../../assets/fonts/public-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../../css/styles.css?v=v022">
   <script>document.documentElement.classList.add("js");</script>
-  <script src="../../js/work.js?v=v021-random1-random1" defer></script>
+  <script src="../../js/video-loop.js?v=v024" defer></script><script src="../../js/work.js?v=v021-random1-random1" defer></script>
 </head>
-<body class="work-case-study-page" id="top">
+<body class="work-case-study-page {'case-study-featured' if p.featured else 'case-study-not-featured'}" id="top">
   <a class="skip-link" href="#main-content">Skip to main content</a>
   <header class="site-header" aria-label="Primary">
     <a class="brand-tab" href="#contact" aria-label="GRAPHIC HAVOC — go to contact form"><span class="brand-tab__mark" aria-hidden="true"></span><span class="sr-only">GRAPHIC HAVOC</span></a>
@@ -956,11 +958,12 @@ def render_project(p: Project):
   <meta name="twitter:image" content="{og_image}">
   <meta name="twitter:image:alt" content="{escape(p.preview_alt, quote=True)}">
   <script type="application/ld+json">{jsonld}</script>
-  <link rel="stylesheet" href="../../css/styles.css?v=v019bc">
+  <link rel="preload" href="../../assets/fonts/public-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../../css/styles.css?v=v022">
   <script>document.documentElement.classList.add("js");</script>
-  <script src="../../js/work.js?v=v021-random1-random1" defer></script>
+  <script src="../../js/video-loop.js?v=v024" defer></script><script src="../../js/work.js?v=v021-random1-random1" defer></script>
 </head>
-<body class="work-project-page" id="top">
+<body class="work-project-page {'project-featured' if p.featured else 'project-not-featured'}" id="top">
   <a class="skip-link" href="#main-content">Skip to main content</a>
   <header class="site-header" aria-label="Primary">
     <a class="brand-tab" href="#contact" aria-label="GRAPHIC HAVOC — go to contact form"><span class="brand-tab__mark" aria-hidden="true"></span><span class="sr-only">GRAPHIC HAVOC</span></a>
@@ -1023,6 +1026,26 @@ def patch_homepage(projects: List[Project]):
     HOME_001.write_text(html, encoding="utf-8")
 
 
+def prerender_root_index():
+    """Inline the homepage 001 fragment into the root index.html.
+
+    Crawlers, answer engines, and any visitor without JavaScript receive the
+    complete homepage in the initial HTML. js/app.js hydrates this markup
+    instead of fetching it when the requested variant matches. Other variants
+    (?homepage=002, or random selection when enabled) are still fetched.
+    Runs after patch_homepage() so generated case studies and cards are included.
+    """
+    start = "<!-- PRERENDERED_HOMEPAGE_START -->"
+    end = "<!-- PRERENDERED_HOMEPAGE_END -->"
+    index_html = ROOT_INDEX.read_text(encoding="utf-8")
+    if start not in index_html or end not in index_html:
+        raise ValueError("index.html is missing prerendered homepage markers")
+    fragment = HOME_001.read_text(encoding="utf-8").strip()
+    block = start + "\n" + fragment + "\n    " + end
+    index_html = re.sub(re.escape(start) + r".*?" + re.escape(end), lambda _m: block, index_html, flags=re.S)
+    ROOT_INDEX.write_text(index_html, encoding="utf-8")
+
+
 def render_work_index(projects: List[Project]):
     canonical = f"{SITE}/work/"
     cards = "\n".join(
@@ -1041,7 +1064,8 @@ def render_work_index(projects: List[Project]):
   <meta name="robots" content="noindex, nofollow"><meta name="author" content="GRAPHIC HAVOC"><link rel="canonical" href="{canonical}">
   <meta property="og:type" content="website"><meta property="og:site_name" content="GRAPHIC HAVOC"><meta property="og:title" content="Work — GRAPHIC HAVOC"><meta property="og:description" content="GRAPHIC HAVOC projects and collaborations across disciplines, industries, formats, and executions."><meta property="og:url" content="{canonical}">
   <script type="application/ld+json">{jsonld}</script>
-  <link rel="stylesheet" href="../css/styles.css?v=v019bc"><script>document.documentElement.classList.add("js");</script><script src="../js/work.js?v=v021-random1-random1" defer></script>
+  <link rel="preload" href="../assets/fonts/public-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../css/styles.css?v=v022"><script>document.documentElement.classList.add("js");</script><script src="../js/video-loop.js?v=v024" defer></script><script src="../js/work.js?v=v021-random1-random1" defer></script>
 </head>
 <body class="work-index-page" id="top">
   <a class="skip-link" href="#main-content">Skip to main content</a>
@@ -1101,6 +1125,7 @@ def main():
             (p.folder / "index.html").write_text(render_project(p), encoding="utf-8")
         (WORK_DIR / "index.html").write_text(render_work_index(projects), encoding="utf-8")
         patch_homepage(projects)
+        prerender_root_index()
         write_sitemaps(projects)
         print(f"Built {len(projects)} project(s): " + ", ".join(p.slug for p in projects))
         print("Validation passed.")

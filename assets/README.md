@@ -9,3 +9,4 @@ Current supplied assets wired into the test build:
 - `1080x1350.webp` — supplied 4:5 FPO media used in Amplifier case-study portrait placements.
 
 Media without an assigned MA token retains its intrinsic source aspect ratio.
+- `fonts/` — self-hosted Public Sans variable font (Latin + Latin Extended, normal + italic, weights 100–900). SIL OFL 1.1 license included. Referenced by `@font-face` at the top of `css/styles.css`.
