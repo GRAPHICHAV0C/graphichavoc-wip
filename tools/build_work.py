@@ -1107,6 +1107,7 @@ def render_work_index(projects: List[Project]):
   <a class="skip-link" href="#main-content">Skip to main content</a>
   <header class="site-header" aria-label="Primary"><a class="brand-tab" href="#contact" aria-label="GRAPHIC HAVOC — go to contact form"><span class="brand-tab__mark" aria-hidden="true"></span><span class="sr-only">GRAPHIC HAVOC</span></a></header>
   <main id="main-content">
+    <h1 class="sr-only">GRAPHIC HAVOC Work</h1>
     <section class="work-index sc2" aria-label="GRAPHIC HAVOC work">
       <div class="work-index__grid" data-randomize-order>{cards}</div>
     </section>
