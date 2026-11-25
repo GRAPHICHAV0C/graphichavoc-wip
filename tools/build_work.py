@@ -892,6 +892,14 @@ def render_case_study_page(p: Project):
   <meta name="twitter:image:alt" content="{escape(p.preview_alt, quote=True)}">
   <script type="application/ld+json">{jsonld}</script>
   <link rel="preload" href="../../assets/fonts/public-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="icon" href="../../favicon.ico" sizes="48x48">
+  <link rel="icon" href="../../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../../assets/icons/favicon-32x32.png" type="image/png" sizes="32x32">
+  <link rel="icon" href="../../assets/icons/favicon-16x16.png" type="image/png" sizes="16x16">
+  <link rel="apple-touch-icon" href="../../assets/icons/apple-touch-icon.png">
+  <link rel="manifest" href="../../site.webmanifest">
+  <meta name="theme-color" content="#272727">
+  <meta name="application-name" content="GRAPHIC HAVOC">
   <link rel="stylesheet" href="../../css/styles.css?v=v028">
   <script>document.documentElement.classList.add("js");</script>
   <script src="../../js/video-loop.js?v=v025" defer></script><script src="../../js/work.js?v=form-fields-1" defer></script>
@@ -970,6 +978,14 @@ def render_project(p: Project):
   <meta name="twitter:image:alt" content="{escape(p.preview_alt, quote=True)}">
   <script type="application/ld+json">{jsonld}</script>
   <link rel="preload" href="../../assets/fonts/public-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="icon" href="../../favicon.ico" sizes="48x48">
+  <link rel="icon" href="../../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../../assets/icons/favicon-32x32.png" type="image/png" sizes="32x32">
+  <link rel="icon" href="../../assets/icons/favicon-16x16.png" type="image/png" sizes="16x16">
+  <link rel="apple-touch-icon" href="../../assets/icons/apple-touch-icon.png">
+  <link rel="manifest" href="../../site.webmanifest">
+  <meta name="theme-color" content="#272727">
+  <meta name="application-name" content="GRAPHIC HAVOC">
   <link rel="stylesheet" href="../../css/styles.css?v=v028">
   <script>document.documentElement.classList.add("js");</script>
   <script src="../../js/video-loop.js?v=v025" defer></script><script src="../../js/work.js?v=form-fields-1" defer></script>
@@ -1034,7 +1050,7 @@ def patch_homepage(projects: List[Project]):
     if start not in html or end not in html:
         raise ValueError("Homepage is missing generated work card markers")
     html = re.sub(re.escape(start) + r".*?" + re.escape(end), generated, html, flags=re.S)
-    HOME_001.write_text(html, encoding="utf-8")
+    HOME_001.write_text(add_image_dimensions(html, ROOT), encoding="utf-8")
 
 
 def prerender_root_index():
@@ -1054,7 +1070,7 @@ def prerender_root_index():
     fragment = HOME_001.read_text(encoding="utf-8").strip()
     block = start + "\n" + fragment + "\n    " + end
     index_html = re.sub(re.escape(start) + r".*?" + re.escape(end), lambda _m: block, index_html, flags=re.S)
-    ROOT_INDEX.write_text(index_html, encoding="utf-8")
+    ROOT_INDEX.write_text(add_image_dimensions(index_html, ROOT), encoding="utf-8")
 
 
 def render_work_index(projects: List[Project]):
@@ -1074,8 +1090,17 @@ def render_work_index(projects: List[Project]):
   <meta name="description" content="GRAPHIC HAVOC projects and collaborations across disciplines, industries, formats, and executions.">
   {ROBOTS_META}<meta name="author" content="GRAPHIC HAVOC"><link rel="canonical" href="{canonical}">
   <meta property="og:type" content="website"><meta property="og:site_name" content="GRAPHIC HAVOC"><meta property="og:title" content="Work — GRAPHIC HAVOC"><meta property="og:description" content="GRAPHIC HAVOC projects and collaborations across disciplines, industries, formats, and executions."><meta property="og:url" content="{canonical}">
+  <meta property="og:image" content="{SITE}/assets/graphichavoc-social-share.webp"><meta property="og:image:type" content="image/webp"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="GRAPHIC HAVOC"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="{SITE}/assets/graphichavoc-social-share.webp"><meta name="twitter:image:alt" content="GRAPHIC HAVOC">
   <script type="application/ld+json">{jsonld}</script>
   <link rel="preload" href="../assets/fonts/public-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="icon" href="../favicon.ico" sizes="48x48">
+  <link rel="icon" href="../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../assets/icons/favicon-32x32.png" type="image/png" sizes="32x32">
+  <link rel="icon" href="../assets/icons/favicon-16x16.png" type="image/png" sizes="16x16">
+  <link rel="apple-touch-icon" href="../assets/icons/apple-touch-icon.png">
+  <link rel="manifest" href="../site.webmanifest">
+  <meta name="theme-color" content="#272727">
+  <meta name="application-name" content="GRAPHIC HAVOC">
   <link rel="stylesheet" href="../css/styles.css?v=v028"><script>document.documentElement.classList.add("js");</script><script src="../js/video-loop.js?v=v025" defer></script><script src="../js/work.js?v=form-fields-1" defer></script>
 </head>
 <body class="work-index-page" id="top">
@@ -1135,6 +1160,55 @@ def apply_launch_gate(projects: List[Project]):
         print("WARNING: index.html still has the social-share og:image commented out.")
 
 
+from urllib.parse import unquote as _unquote
+
+_IMG_TAG = re.compile(r"<img\b[^>]*>", re.I)
+_IMG_SIZE_CACHE = {}
+
+
+def _image_size(path):
+    """Intrinsic (width, height) of a local image, or None."""
+    key = str(path)
+    if key in _IMG_SIZE_CACHE:
+        return _IMG_SIZE_CACHE[key]
+    size = None
+    try:
+        if path.suffix.lower() == ".svg":
+            head = path.read_text(encoding="utf-8", errors="ignore")[:4000]
+            m = re.search(r'viewBox="[-\d.]+[ ,]+[-\d.]+[ ,]+([\d.]+)[ ,]+([\d.]+)"', head)
+            if m:
+                size = (round(float(m.group(1))), round(float(m.group(2))))
+        elif Image is not None and path.is_file():
+            with Image.open(path) as im:
+                size = im.size
+    except Exception:
+        size = None
+    _IMG_SIZE_CACHE[key] = size
+    return size
+
+
+def add_image_dimensions(html: str, base: Path) -> str:
+    """Add intrinsic width/height to local <img> tags that lack them, so the browser
+    reserves space before the image loads (no layout shift). CSS still controls the
+    displayed size; existing width/height attributes are never changed."""
+    def fix(m):
+        tag = m.group(0)
+        if re.search(r"\swidth\s*=", tag, re.I) or re.search(r"\sheight\s*=", tag, re.I):
+            return tag
+        src = re.search(r'\ssrc\s*=\s*"([^"]+)"', tag, re.I)
+        if not src:
+            return tag
+        url = src.group(1)
+        if re.match(r"^(?:[a-z][a-z0-9+.-]*:|//)", url, re.I):
+            return tag
+        size = _image_size((base / _unquote(url.split("#")[0].split("?")[0])).resolve())
+        if not size:
+            return tag
+        extra = f' width="{size[0]}" height="{size[1]}"'
+        return tag[:-2].rstrip() + extra + " />" if tag.endswith("/>") else tag[:-1] + extra + ">"
+    return _IMG_TAG.sub(fix, html)
+
+
 def discover_projects():
     projects = []
     for folder in sorted(WORK_DIR.iterdir()):
@@ -1154,8 +1228,8 @@ def main():
         cleanup_stale_social_files()
         projects = discover_projects()
         for p in projects:
-            (p.folder / "index.html").write_text(render_project(p), encoding="utf-8")
-        (WORK_DIR / "index.html").write_text(render_work_index(projects), encoding="utf-8")
+            (p.folder / "index.html").write_text(add_image_dimensions(render_project(p), p.folder), encoding="utf-8")
+        (WORK_DIR / "index.html").write_text(add_image_dimensions(render_work_index(projects), WORK_DIR), encoding="utf-8")
         patch_homepage(projects)
         prerender_root_index()
         write_sitemaps(projects)
