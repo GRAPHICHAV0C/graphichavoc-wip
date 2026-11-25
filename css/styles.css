@@ -1474,3 +1474,12 @@ video.project-media__asset {
     justify-content: space-between;
   }
 }
+
+/* ---------- Project pages: phone top spacing ---------- */
+@media (max-width: 767px) {
+  /* The fixed tab is 44px tall; keep 20px (--s1) between it and the byline. */
+  .work-project-page.project-not-featured .project-page,
+  .work-project-page.project-featured .project-page {
+    padding-top: calc(var(--s3) + var(--s1));
+  }
+}
