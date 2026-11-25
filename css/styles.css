@@ -1132,9 +1132,17 @@ iframe.case-media {
   display: block;
 }
 
-.work-card:hover .work-card__overlay,
 .work-card:focus-visible .work-card__overlay {
   opacity: 1;
+}
+
+/* Hover reveal only on devices that can actually hover (mouse / trackpad).
+   On touch devices the thumbnail stands alone and one tap opens the project;
+   the full name and disciplines stay in each card's aria-label. */
+@media (hover: hover) and (pointer: fine) {
+  .work-card:hover .work-card__overlay {
+    opacity: 1;
+  }
 }
 
 /* ---------- /work archive index ---------- */
