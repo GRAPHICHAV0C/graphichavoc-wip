@@ -1369,3 +1369,36 @@ video.project-media__asset {
   }
 }
 
+/* ---------- Footer: vertical tablets and phones ---------- */
+/* In portrait (and up to 1100px wide) the footer stacks in DOM order:
+   "Communicate w/" title, then the contact form, then the GRAPHIC HAVOC wordmark.
+   Landscape and desktop keep the 16-column composition. */
+@media (orientation: portrait) and (max-width: 1100px) {
+  .contact-grid {
+    align-items: start;
+  }
+
+  .contact-title {
+    grid-column: 1 / 17;
+    align-self: start;
+    margin: 0 0 var(--s2);
+  }
+
+  .contact-form {
+    grid-column: 1 / 17;
+  }
+}
+
+/* Phones: the form fields, message, and send button also stack in one column. */
+@media (orientation: portrait) and (max-width: 599px) {
+  .contact-form {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: var(--s1);
+  }
+
+  .contact-form__fields,
+  .contact-form__message,
+  .contact-form__success {
+    grid-column: 1 / -1;
+  }
+}
