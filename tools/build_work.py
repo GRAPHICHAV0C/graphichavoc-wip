@@ -37,6 +37,13 @@ HOME_001 = ROOT / "homepages" / "001.html"
 ROOT_INDEX = ROOT / "index.html"
 SITE = "https://graphichavoc.com"
 
+# ---- LAUNCH GATE -------------------------------------------------------------
+# False = WIP deployment: noindex on every page, sitemaps not advertised.
+# True  = public launch: index/follow everywhere, robots.txt advertises sitemaps.
+# The build rewrites every robots tag and robots.txt from this one switch, then verifies them.
+INDEXABLE = False
+ROBOTS_META = '<meta name="robots" content="index, follow">' if INDEXABLE else '<meta name="robots" content="noindex, nofollow">'
+
 IGNORED_NAMES = {".DS_Store"}
 IGNORED_PREFIXES = ("._",)
 STALE_SOCIAL_SUFFIX = "-social.jpg"
@@ -860,7 +867,7 @@ def render_case_study_page(p: Project):
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{title_display} — GRAPHIC HAVOC</title>
   <meta name="description" content="{escape(p.description, quote=True)}">
-  <meta name="robots" content="noindex, nofollow">
+  {ROBOTS_META}
   <meta name="author" content="GRAPHIC HAVOC">
   <link rel="canonical" href="{canonical}">
   <meta property="og:type" content="article">
@@ -938,7 +945,7 @@ def render_project(p: Project):
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{title_display} — GRAPHIC HAVOC</title>
   <meta name="description" content="{escape(p.description, quote=True)}">
-  <meta name="robots" content="noindex, nofollow">
+  {ROBOTS_META}
   <meta name="author" content="GRAPHIC HAVOC">
   <link rel="canonical" href="{canonical}">
   <meta property="og:type" content="article">
@@ -1061,7 +1068,7 @@ def render_work_index(projects: List[Project]):
   <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Work — GRAPHIC HAVOC</title>
   <meta name="description" content="GRAPHIC HAVOC projects and collaborations across disciplines, industries, formats, and executions.">
-  <meta name="robots" content="noindex, nofollow"><meta name="author" content="GRAPHIC HAVOC"><link rel="canonical" href="{canonical}">
+  {ROBOTS_META}<meta name="author" content="GRAPHIC HAVOC"><link rel="canonical" href="{canonical}">
   <meta property="og:type" content="website"><meta property="og:site_name" content="GRAPHIC HAVOC"><meta property="og:title" content="Work — GRAPHIC HAVOC"><meta property="og:description" content="GRAPHIC HAVOC projects and collaborations across disciplines, industries, formats, and executions."><meta property="og:url" content="{canonical}">
   <script type="application/ld+json">{jsonld}</script>
   <link rel="preload" href="../assets/fonts/public-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
@@ -1100,7 +1107,28 @@ def write_sitemaps(projects: List[Project]):
         image_rows.append(f"  <url><loc>{page}</loc>{''.join(entries)}</url>")
     image_sitemap = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n' + "\n".join(image_rows) + '\n</urlset>\n'
     (ROOT / "image-sitemap.xml").write_text(image_sitemap, encoding="utf-8")
-    (ROOT / "robots.txt").write_text("User-agent: *\nDisallow: /homepages/\n", encoding="utf-8")
+
+
+def apply_launch_gate(projects: List[Project]):
+    """Keep every robots directive in step with INDEXABLE, write robots.txt, then verify."""
+    pattern = re.compile(r'<meta name="robots" content="[^"]*">')
+    html = ROOT_INDEX.read_text(encoding="utf-8")
+    if len(pattern.findall(html)) != 1:
+        raise ValueError("index.html must contain exactly one robots meta tag")
+    ROOT_INDEX.write_text(pattern.sub(lambda _m: ROBOTS_META, html), encoding="utf-8")
+
+    lines = ["User-agent: *", "Disallow: /homepages/"]
+    if INDEXABLE:
+        lines += ["", f"Sitemap: {SITE}/sitemap.xml", f"Sitemap: {SITE}/image-sitemap.xml"]
+    (ROOT / "robots.txt").write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+    pages = [ROOT_INDEX, WORK_DIR / "index.html"] + [p.folder / "index.html" for p in projects]
+    bad = [str(pg.relative_to(ROOT)) for pg in pages if ROBOTS_META not in pg.read_text(encoding="utf-8")]
+    if bad:
+        raise ValueError("robots meta out of step with INDEXABLE in: " + ", ".join(bad))
+    print("Indexing: " + ("ON (public launch build)" if INDEXABLE else "OFF (noindex, WIP build)"))
+    if INDEXABLE and '<!-- <meta property="og:image"' in ROOT_INDEX.read_text(encoding="utf-8"):
+        print("WARNING: index.html still has the social-share og:image commented out.")
 
 
 def discover_projects():
@@ -1127,6 +1155,7 @@ def main():
         patch_homepage(projects)
         prerender_root_index()
         write_sitemaps(projects)
+        apply_launch_gate(projects)
         print(f"Built {len(projects)} project(s): " + ", ".join(p.slug for p in projects))
         print("Validation passed.")
     except Exception as exc:

@@ -14,7 +14,7 @@ This package is a **temporary work-in-progress hosting test**, not a public rele
 - `robots.txt` does not advertise sitemaps and blocks crawler access to `/homepages/` fragments.
 - `.nojekyll` is included for GitHub Pages static-file testing.
 - Existing email/contact forms are intentionally unchanged.
-- When additional homepage variations are ready, restore random loading by changing `RANDOM_HOMEPAGE_ENABLED` to `true`; review indexing directives separately before public launch.
+- When additional homepage variations are ready, restore random loading by changing `RANDOM_HOMEPAGE_ENABLED` to `true`; indexing is controlled by the single `INDEXABLE` switch in `tools/build_work.py` (currently `False`).
 
 This build makes `/work/` the single permanent archive/source of truth for both standard projects and featured case studies.
 
