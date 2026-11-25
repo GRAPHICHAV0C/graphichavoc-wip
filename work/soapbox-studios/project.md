@@ -4,6 +4,8 @@ schema_version: 1
 title: soapbox studios
 slug: soapbox-studios
 year: 2000
+presentation: project
+featured: false
 
 disciplines:
   - Brand Identity
