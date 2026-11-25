@@ -4,3 +4,6 @@ __MACOSX/
 **/__MACOSX/
 ._*
 **/._*
+
+__pycache__/
+*.pyc
