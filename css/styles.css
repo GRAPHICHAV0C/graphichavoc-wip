@@ -1402,3 +1402,22 @@ video.project-media__asset {
     grid-column: 1 / -1;
   }
 }
+
+/* ---------- Clients: phones ---------- */
+/* The logos GIF comes first in the markup, so on phones the text block is placed
+   in row 1 and the GIF in row 2 with explicit grid rows (markup is unchanged). */
+@media (max-width: 767px) {
+  .clients-grid {
+    row-gap: var(--s3);
+  }
+
+  .clients-copy-block {
+    grid-column: 1 / 17;
+    grid-row: 1;
+  }
+
+  .clients-media {
+    grid-column: 1 / 17;
+    grid-row: 2;
+  }
+}
