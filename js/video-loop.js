@@ -143,12 +143,24 @@
     if (debug) renderPanel();
   }
 
-  /* ---------- first-touch fallback for blocked autoplay ---------- */
-  function resumeVisible() {
-    videos().forEach((video) => { if (onScreen(video) && video.paused) tryPlay(video); });
+  /* ---------- tap fallback for blocked autoplay ---------- */
+  /* iOS only treats a completed tap (touchend / click) as permission to call play();
+     touchstart and pointerdown do not count. Stay armed (no `once`) so a scroll gesture
+     cannot use up the only attempt. Failed play() calls are harmless and rate-limited. */
+  let lastTapResumeAt = 0;
+  function resumeVisible(event) {
+    const now = performance.now();
+    if (event && event.type && now - lastTapResumeAt < 150) return; // touchend+pointerup+click fire together
+    lastTapResumeAt = now;
+    videos().forEach((video) => {
+      if (onScreen(video) && video.paused) {
+        if (event && event.type) note(video, "tap-resume:" + event.type);
+        tryPlay(video);
+      }
+    });
   }
-  ["touchstart", "pointerdown", "keydown"].forEach((name) => {
-    window.addEventListener(name, resumeVisible, { passive: true, once: true });
+  ["touchend", "pointerup", "click", "keydown"].forEach((name) => {
+    window.addEventListener(name, resumeVisible, { passive: true });
   });
   document.addEventListener("visibilitychange", () => { if (!document.hidden) setTimeout(resumeVisible, 50); });
   window.addEventListener("pageshow", () => setTimeout(resumeVisible, 50));
