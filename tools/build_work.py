@@ -892,7 +892,7 @@ def render_case_study_page(p: Project):
   <meta name="twitter:image:alt" content="{escape(p.preview_alt, quote=True)}">
   <script type="application/ld+json">{jsonld}</script>
   <link rel="preload" href="../../assets/fonts/public-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="../../css/styles.css?v=v025">
+  <link rel="stylesheet" href="../../css/styles.css?v=v026">
   <script>document.documentElement.classList.add("js");</script>
   <script src="../../js/video-loop.js?v=v025" defer></script><script src="../../js/work.js?v=form-fields-1" defer></script>
 </head>
@@ -970,7 +970,7 @@ def render_project(p: Project):
   <meta name="twitter:image:alt" content="{escape(p.preview_alt, quote=True)}">
   <script type="application/ld+json">{jsonld}</script>
   <link rel="preload" href="../../assets/fonts/public-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="../../css/styles.css?v=v025">
+  <link rel="stylesheet" href="../../css/styles.css?v=v026">
   <script>document.documentElement.classList.add("js");</script>
   <script src="../../js/video-loop.js?v=v025" defer></script><script src="../../js/work.js?v=form-fields-1" defer></script>
 </head>
@@ -1076,7 +1076,7 @@ def render_work_index(projects: List[Project]):
   <meta property="og:type" content="website"><meta property="og:site_name" content="GRAPHIC HAVOC"><meta property="og:title" content="Work — GRAPHIC HAVOC"><meta property="og:description" content="GRAPHIC HAVOC projects and collaborations across disciplines, industries, formats, and executions."><meta property="og:url" content="{canonical}">
   <script type="application/ld+json">{jsonld}</script>
   <link rel="preload" href="../assets/fonts/public-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="../css/styles.css?v=v025"><script>document.documentElement.classList.add("js");</script><script src="../js/video-loop.js?v=v025" defer></script><script src="../js/work.js?v=form-fields-1" defer></script>
+  <link rel="stylesheet" href="../css/styles.css?v=v026"><script>document.documentElement.classList.add("js");</script><script src="../js/video-loop.js?v=v025" defer></script><script src="../js/work.js?v=form-fields-1" defer></script>
 </head>
 <body class="work-index-page" id="top">
   <a class="skip-link" href="#main-content">Skip to main content</a>

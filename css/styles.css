@@ -1421,3 +1421,48 @@ video.project-media__asset {
     grid-row: 2;
   }
 }
+
+/* ---------- Homepage text sections: phones ---------- */
+/* Phones: Identity / Method / Applications stack in reading order.
+   Desktop and tablet keep the 16-column compositions. The two empty image slots in
+   Identity are hidden on phones. */
+@media (max-width: 767px) {
+  .positioning-grid,
+  .editorial-layout {
+    row-gap: var(--s2);
+  }
+
+  .positioning .section-kicker,
+  .positioning-title,
+  .positioning-copy,
+  .discipline-list,
+  .method .section-kicker,
+  .applications .section-kicker,
+  .editorial-title,
+  .applications .editorial-title,
+  .editorial-copy--left,
+  .editorial-copy--right {
+    grid-column: 1 / 17;
+    grid-row: auto;
+    align-self: start;
+  }
+
+  .positioning-title {
+    text-align: left;
+  }
+
+  .positioning-media {
+    display: none;
+  }
+
+  .positioning-copy,
+  .discipline-list {
+    padding-top: 0;
+  }
+
+  .discipline-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+}
