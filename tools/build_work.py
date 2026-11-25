@@ -658,6 +658,8 @@ def standard_contact_footer():
           <h2 class="contact-title t4 w3" id="contact-title">Communicate w/</h2>
           <form class="contact-form" action="https://api.web3forms.com/submit" method="POST" novalidate>
             <input type="hidden" name="access_key" value="41d082aa-315b-4534-b735-3c4187c5c1a7">
+            <input type="hidden" name="subject" value="GRAPHIC HAVOC website inquiry">
+            <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none">
             <div class="contact-form__fields">
               <label><span class="sr-only">First Name</span><input name="firstname" type="text" autocomplete="given-name" placeholder="First Name" required></label>
               <label><span class="sr-only">Last Name</span><input name="lastname" type="text" autocomplete="family-name" placeholder="Last Name" required></label>
@@ -687,6 +689,8 @@ def contact_footer(prefix: str):
           <h2 class="contact-title t4 w3" id="contact-title">Get in touch to<br>collaborate or<br>continue to<br><a class="project-contact__work-link" href="{prefix}work/">view more work.</a></h2>
           <form class="contact-form" action="https://api.web3forms.com/submit" method="POST" novalidate>
             <input type="hidden" name="access_key" value="41d082aa-315b-4534-b735-3c4187c5c1a7">
+            <input type="hidden" name="subject" value="GRAPHIC HAVOC website inquiry">
+            <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none">
             <div class="contact-form__fields">
               <label><span class="sr-only">First Name</span><input name="firstname" type="text" autocomplete="given-name" placeholder="First Name" required></label>
               <label><span class="sr-only">Last Name</span><input name="lastname" type="text" autocomplete="family-name" placeholder="Last Name" required></label>
@@ -890,7 +894,7 @@ def render_case_study_page(p: Project):
   <link rel="preload" href="../../assets/fonts/public-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="../../css/styles.css?v=v022">
   <script>document.documentElement.classList.add("js");</script>
-  <script src="../../js/video-loop.js?v=v025" defer></script><script src="../../js/work.js?v=v021-random1-random1" defer></script>
+  <script src="../../js/video-loop.js?v=v025" defer></script><script src="../../js/work.js?v=form-fields-1" defer></script>
 </head>
 <body class="work-case-study-page {'case-study-featured' if p.featured else 'case-study-not-featured'}" id="top">
   <a class="skip-link" href="#main-content">Skip to main content</a>
@@ -968,7 +972,7 @@ def render_project(p: Project):
   <link rel="preload" href="../../assets/fonts/public-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="../../css/styles.css?v=v022">
   <script>document.documentElement.classList.add("js");</script>
-  <script src="../../js/video-loop.js?v=v025" defer></script><script src="../../js/work.js?v=v021-random1-random1" defer></script>
+  <script src="../../js/video-loop.js?v=v025" defer></script><script src="../../js/work.js?v=form-fields-1" defer></script>
 </head>
 <body class="work-project-page {'project-featured' if p.featured else 'project-not-featured'}" id="top">
   <a class="skip-link" href="#main-content">Skip to main content</a>
@@ -1072,7 +1076,7 @@ def render_work_index(projects: List[Project]):
   <meta property="og:type" content="website"><meta property="og:site_name" content="GRAPHIC HAVOC"><meta property="og:title" content="Work — GRAPHIC HAVOC"><meta property="og:description" content="GRAPHIC HAVOC projects and collaborations across disciplines, industries, formats, and executions."><meta property="og:url" content="{canonical}">
   <script type="application/ld+json">{jsonld}</script>
   <link rel="preload" href="../assets/fonts/public-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="../css/styles.css?v=v022"><script>document.documentElement.classList.add("js");</script><script src="../js/video-loop.js?v=v025" defer></script><script src="../js/work.js?v=v021-random1-random1" defer></script>
+  <link rel="stylesheet" href="../css/styles.css?v=v022"><script>document.documentElement.classList.add("js");</script><script src="../js/video-loop.js?v=v025" defer></script><script src="../js/work.js?v=form-fields-1" defer></script>
 </head>
 <body class="work-index-page" id="top">
   <a class="skip-link" href="#main-content">Skip to main content</a>

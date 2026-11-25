@@ -96,6 +96,9 @@
 
   async function submitToWeb3Forms(form) {
     const formData = new FormData(form);
+    /* Web3Forms' standard sender field is "name"; this form collects first + last. */
+    const senderName = `${formData.get("firstname") || ""} ${formData.get("lastname") || ""}`.trim();
+    if (senderName) formData.set("name", senderName);
 
     const response = await fetch("https://api.web3forms.com/submit", {
       method: "POST",
